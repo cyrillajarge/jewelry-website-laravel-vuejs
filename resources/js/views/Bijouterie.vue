@@ -165,7 +165,7 @@ export default {
             color: white;
             line-height: 2em;
             text-align: center;
-            font-size: calc(12px + (16 - 12) * ((100vw - 300px) / (1600 - 300)));
+            font-size: calc(14px + (16 - 14) * ((100vw - 300px) / (1600 - 300)));
         }
     }
 
@@ -190,7 +190,8 @@ export default {
             }
 
             .content-container{
-                width: 50%;
+                width: 40%;
+                margin: 0 auto;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -198,6 +199,11 @@ export default {
 
                 h2,p{
                     color: white;
+                }
+
+                p{
+                    text-align: justify;
+                    font-size: calc(14px + (16 - 14) * ((100vw - 300px) / (1600 - 300)));
                 }
             }
 
@@ -226,6 +232,30 @@ export default {
     @media screen and(max-width: $tablet) {
         .bijouterie-full-header{
             height: calc(100vh - 70px);
+        }
+
+        .bijouterie-intro{
+            width: 80%;
+        }
+
+        .bijouterie-categorie-sections{
+            .bijouterie-categorie{
+                height: auto;
+                flex-wrap: wrap;
+
+                .image-container{
+                    height: 25em;
+                    width: 100%;
+                    order: 1 !important;
+                }
+
+                .content-container{
+                    width: 80%;
+                    height: 20em;
+                    margin: 0 auto;
+                    order: 2 !important;
+                }
+            }
         }
     }
 </style>

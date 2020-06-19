@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Page;
-use App\Pelement;
+use Spatie\QueryBuilder\QueryBuilder;
+use App\Product;
 use Illuminate\Http\Request;
 
-class PelementController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,13 @@ class PelementController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $products = QueryBuilder::for(Product::class)
+            ->allowedSorts('id')
+            ->allowedIncludes('images')
+            ->get();
 
+        return $products;
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -37,27 +41,40 @@ class PelementController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'category_id' => 'required|',
+            'name' => 'required|string',
+            'description' => 'required|string',
+        ]);
+
+        $product = Product::create($data);
+        
+        return response($product, 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Pelement  $pelement
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Pelement $pelement)
+    public function show($id)
     {
-        return Pelement::with('images')->get();
+        $product = QueryBuilder::for(Product::class)
+            ->allowedIncludes(['images'])
+            ->get()
+            ->find($id);
+
+        return $product;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Pelement  $pelement
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pelement $pelement)
+    public function edit(Product $product)
     {
         //
     }
@@ -66,29 +83,21 @@ class PelementController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Pelement  $pelement
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pelement $pelement)
+    public function update(Request $request, Product $product)
     {
-        $data = $request->validate([
-            'title'=> 'required|string',
-            'content' => 'required|string',
-        ]);
-
-        $pelement->update($data);
-        $pelement->images()->sync($request->images);
-
-        return response($pelement, 200);
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Pelement  $pelement
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pelement $pelement)
+    public function destroy(Product $product)
     {
         //
     }

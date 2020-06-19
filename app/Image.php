@@ -11,4 +11,8 @@ class Image extends Model
     public function pelements(){
         return $this->belongsToMany('App\Pelement');
     }
+
+    public function products(){
+        return $this->belongsToMany('App\Product');
+    }
 }

@@ -10,11 +10,15 @@ export const store = new Vuex.Store({
         token: localStorage.getItem('access_token') || null,
         events: [],
         pages: [],
-        images: []
+        images: [],
+        categories: []
     },
     getters: {
         loggedIn : (state) => {
             return state.token !== null
+        },
+        token : (state) => {
+            return state.token
         },
         allEvents : (state) => {
             return state.events
@@ -30,6 +34,12 @@ export const store = new Vuex.Store({
         },
         allImages : (state) => {
             return state.images
+        },
+        allCategories : (state) => {
+            return state.categories
+        },
+        firstCategory: (state) => {
+            return state.categories[0]
         }
     },
     mutations: {
@@ -76,6 +86,9 @@ export const store = new Vuex.Store({
         deleteImage(state, id){
             const index = state.images.findIndex(item => item.id == id)
             state.images.splice(index, 1)
+        },
+        retrieveCategories(state, categories){
+            state.categories = categories
         }
     },
     actions: {
@@ -189,6 +202,15 @@ export const store = new Vuex.Store({
             axios.delete('/images/' + id)
             .then(response => {
                 context.commit('deleteImage', id)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        },
+        retrieveCategories(context){
+            axios.get('/categories')
+            .then(response => {
+                context.commit('retrieveCategories', response.data)
             })
             .catch(error => {
                 console.log(error)

@@ -19,6 +19,7 @@ export default {
         this.$store.dispatch('retrieveEvents')
         this.$store.dispatch('retrievePages')
         this.$store.dispatch('retrieveImages')
+        this.$store.dispatch('retrieveCategories')
     }
 }
 </script>
@@ -126,5 +127,17 @@ export default {
                 animation: animateLink .375s ease-in-out forwards running;
             }
         }
+    }
+
+    button:focus{
+        outline:0 !important;
+    }
+
+    input:focus{
+        outline:0 !important;
+    }
+
+    textarea:focus{
+        outline:0 !important;
     }
 </style>

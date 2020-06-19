@@ -30,6 +30,17 @@ Route::get('/pelements/page/{page}', 'PageController@elements');
 Route::get('/pelements','PelementController@index');
 Route::patch('/pelements/{pelement}','PelementController@update');
 
+Route::get('/products', 'ProductController@index');
+Route::get('/products/{product}', 'ProductController@show');
+Route::post('/products','ProductController@store');
+Route::patch('/products/{product}','ProductController@update');
+Route::delete('/products/{product}','ProductController@destroy');
+
+Route::get('/categories', 'CategoryController@index');
+Route::get('/categories/{category}', 'CategoryController@show');
+Route::get('/categories/{category}/products', 'CategoryController@products');
+
+
 Route::get('/images','ImageController@index');
 Route::post('/images','ImageController@store');
 

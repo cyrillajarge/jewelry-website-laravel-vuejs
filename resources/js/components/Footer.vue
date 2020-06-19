@@ -46,6 +46,7 @@ export default {
     @import '~@/_variables.scss';
 
     .footer{
+        border-top: 1px solid #000;
         margin: 0 auto;
         width: 100%;
         padding-top: 20px;
