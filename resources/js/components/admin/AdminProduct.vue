@@ -6,7 +6,7 @@
             <i class="fa fa-chevron-down icon" v-if="!show_dropdown" aria-hidden="true"></i>
             <i class="fa fa-chevron-up icon" v-if="show_dropdown" aria-hidden="true"></i>
         </div>
-        <form v-if="show_dropdown" class="page-element-data" @submit.prevent="">
+        <form v-if="show_dropdown" class="page-element-data" action="" @submit.prevent="updateProduct">
             <div class="form-element">
                 <label for="name">Name:</label>
                 <input type="text" name="name" placeholder="Nom du produit" v-model="name">
@@ -20,10 +20,10 @@
                     <img :src="getSrc(id)" alt="selected">
                 </div>
             </div>
-            <button class="basic-btn-black" id="choose-btn" @click="triggerImagePicker">Choisir images</button>
-            <button id="modify-btn" @click="saveData">Sauvegarder</button>
+            <button class="basic-btn-black" id="choose-btn" type="button" @click="triggerImagePicker">Choisir images</button>
+            <button id="modify-btn" type="submit">Sauvegarder</button>
         </form>
-        <AdminImagePicker ref="image_picker" :picker_type="'multiple'" v-bind:selected="selected_images"/>
+        <AdminImagePicker ref="image_picker" :allowed="3" v-bind:selected="selected_images" v-on:selectedImages="setSelectedImages"/>
     </div>
 </template>
 
@@ -44,6 +44,9 @@ export default {
         }
     },
     methods:{
+        setSelectedImages(value){
+            this.selected_images = value
+        },
         deleteProduct(event, product){
             event.stopPropagation()
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.getters.token
@@ -65,19 +68,21 @@ export default {
         getSrc(id){
             return this.$store.getters.allImages.find(item => item.id == id).url
         },
-        saveData(){
-            // axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
-            // axios.patch('/pelements/' + this.element.id ,{
-            //     'title': this.title,
-            //     'content' : this.content,
-            //     'images' : this.selected_images
-            // })
-            // .then(response => {
-            //     console.log("Pelement saved successfully.")
-            // })
-            // .catch(error => {
-            //     console.log(error)
-            // })
+        updateProduct(){
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.getters.token
+            axios.patch('/products/' + this.product.id ,{
+                'category_id': this.product.category_id,
+                'name': this.name,
+                'description' : this.description,
+                'images' : this.selected_images
+            })
+            .then(response => {
+                console.log("Product modified successfully.")
+            })
+            .catch(error => {
+                console.log(error)
+            })
+            alert("Update Product")
         },
         initializeSelected(){
             var ids = []

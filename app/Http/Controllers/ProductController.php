@@ -45,9 +45,10 @@ class ProductController extends Controller
             'category_id' => 'required|',
             'name' => 'required|string',
             'description' => 'required|string',
+            'images' => 'required'
         ]);
-
-        $product = Product::create($data);
+                
+        $product = Product::create(array_slice($data, 0, 3))->images()->attach($data['images']);
         
         return response($product, 201);
     }
@@ -76,7 +77,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        
     }
 
     /**
@@ -88,7 +89,17 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $data = $request->validate([
+            'category_id' => 'required',
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'images' => 'required'
+        ]);
+                
+        $product->update(array_slice($data, 0, 3));
+        $product->images()->sync($data['images']);
+        
+        return response($product, 201);
     }
 
     /**

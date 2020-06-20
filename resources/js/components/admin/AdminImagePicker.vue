@@ -3,7 +3,7 @@
         <div class="modal-container">
             <h1>Images</h1>
             <div class="images-container">
-                <div v-for="image in allImages" v-bind:key="image.id" class="image-container" @click="triggerImage(image.id)">
+                <div v-for="image in allImages" v-bind:key="image.id" class="image-container" @click="selectImage(image.id)">
                     <img :src="image.url" :alt="image.name">
                     <div class="img-overlay"></div>
                     <div class="img-selected" v-if="belongsToSelected(image.id)"></div>
@@ -19,10 +19,10 @@
 
 <script>
 export default {
-    props:['picker_type','selected'],
+    props:['selected','allowed'],
     data () {
         return {
-            selectedImages: this.selected,
+            selectedImages: this.selected || [],
             picker: false,
         }
     },
@@ -32,29 +32,16 @@ export default {
         }
     },
     methods: {
-        triggerImage(id){
-            if(this.picker_type == 'multiple'){
-                const index = this.selectedImages.findIndex(item => item == id)
-                if(index==-1){
+        selectImage(id){
+            const index = this.selectedImages.findIndex(item => item == id)
+            if(index == -1){
+                if(this.selectedImages.length < this.allowed){
                     this.selectedImages.push(id)
-                }
-                else{
-                    this.selectedImages.splice(index, 1)
+                    this.$emit('selectedImages', this.selectedImages)
                 }
             }
             else{
-                if(this.selectedImages.length == 0){
-                    this.selectedImages.push(id)
-                }
-                else{
-                    if(this.selectedImages[0] == id){
-                        this.selectedImages.pop()
-                    }
-                    else{
-                        this.selectedImages.pop()
-                        this.selectedImages.push(id)
-                    }
-                }
+                this.selectedImages.splice(index, 1)
             }
         },
         belongsToSelected(id){

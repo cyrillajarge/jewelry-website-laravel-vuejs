@@ -1,6 +1,6 @@
 <template>
     <div class="select">
-        <button @click="triggerSelect()">
+        <button type="button" @click="triggerSelect()">
             {{capitalize(selected.name)}}
             <i class="fa fa-chevron-down select-icon" v-if="!visible" aria-hidden="true"></i>
             <i class="fa fa-chevron-up select-icon" v-if="visible" aria-hidden="true"></i>

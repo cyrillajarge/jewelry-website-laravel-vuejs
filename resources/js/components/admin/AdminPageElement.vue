@@ -21,7 +21,7 @@
             <button class="basic-btn-black" id="choose-btn" @click="triggerImagePicker">Choisir image<span v-if="element.nimages == 'multiple'">s</span></button>
             <button id="modify-btn" @click="saveData">Sauvegarder</button>
         </form>
-        <AdminImagePicker ref="image_picker" :picker_type="element.nimages" :selected="selected_images"/>
+        <AdminImagePicker ref="image_picker" :allowed="getNumber(element.nimages)" :selected="selected_images" v-on:selectedImages="setSelectedImages"/>
     </div>
 </template>
 
@@ -42,6 +42,12 @@ export default {
         }
     },
     methods:{
+        setSelectedImages(value){
+            this.selected_images = value
+        },
+        getNumber(type){
+            return  (type == "single")? 1 : 50;
+        },
         showElement(){
             this.element_data = !this.element_data
         },

@@ -16,7 +16,7 @@
         <div v-if="modal" id="product-modal">
             <div class="modal-container">
                 <h1>Ajouter un produit</h1>
-                <form action="#" @submit.prevent="addProduct">
+                <form action="" @submit.prevent="addProduct">
                     <div class="form-element">
                         <label for="category">Categorie:</label>
                         <Select class="form-select" v-bind:elements="categories" v-bind:initial="category" v-on:selectedElement="setSelectedModal"/>
@@ -29,20 +29,20 @@
                         <label for="description">Description:</label>
                         <textarea name="description" type="text" placeholder="Description" v-model="description"></textarea>
                     </div>
-                    <button class="basic-btn-black" id="choose-btn" @click="triggerImagePicker">Choisir images</button>
+                    <button class="basic-btn-black" type="button" id="choose-images-btn" @click="triggerImagePicker">Choisir images</button>
                     <div class="selected-images-container">
                         <div v-for="id in selected_images" v-bind:key="id" class="selected-image-container">
                             <img :src="getSrc(id)" alt="selected">
                         </div>
                     </div>
                     <div class="form-element">
-                        <button class="basic-btn-black" @click="triggerModal">Fermer</button>
+                        <button class="basic-btn-black" type="button" @click="triggerModal">Fermer</button>
                         <button class="basic-btn-green" type="submit">Sauvegarder</button>
                     </div>
                 </form>
             </div>
         </div>
-        <AdminImagePicker ref="image_picker" :picker_type="'multiple'" v-bind:selected="selected_images" />
+        <AdminImagePicker ref="image_picker" :allowed="3" v-on:selectedImages="setSelectedImages"/>
     </div>
 </template>
 
@@ -67,13 +67,19 @@ export default {
             "category" : "",
             "name" : "",
             "description" : "",
-            "selected_images": [],
+            "selected_images": '',
             "page_title": "produits",
             "categories": '',
             "products": ''
         }
     },
     methods: {
+        getSrc(id){
+            return this.$store.getters.allImages.find(item => item.id == id).url
+        },
+        setSelectedImages(value){
+            this.selected_images = value
+        },
         triggerImagePicker(){
             this.$refs.image_picker.trigger()
         },
@@ -111,6 +117,7 @@ export default {
                 'category_id': this.category.id,
                 'name': this.name,
                 'description': this.description,
+                'images' : this.selected_images
             })
             .then(response => {
                 this.triggerModal()
@@ -137,10 +144,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
     
     .products-page{
         display: flex;
         flex-direction: column;
+
+        .basic-btn-black{
+            border: none;
+            border-radius: 5px;
+            background: none;
+            padding: 0.5em 1em;
+            outline: none;
+
+            border: 2px solid black;
+            color: black;
+            
+            &:hover{
+                background-color: black;
+                color: white;
+            }
+        }
 
         .filter-section{
             margin-bottom: 2em;
@@ -208,14 +232,15 @@ export default {
                     display: flex;
                     flex-direction: row;
                     flex-wrap: wrap;
-                    width: 100%;
+                    width: 80%;
                     height: 80%;
                     overflow: auto;
+                    margin-top: 2em;
 
                     .selected-image-container{
                         position: relative;
                         height: 15em;
-                        width: calc(100%/4);
+                        width: calc(100%/3);
 
                         img{
                             height: 100%;
@@ -228,6 +253,10 @@ export default {
 
                 .form-select{
                     width: 70%;
+                }
+
+                #choose-images-btn{
+                    width: 80%;
                 }
 
                 .form-element{
