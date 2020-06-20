@@ -166,6 +166,22 @@ export default {
             }
         }
 
+        .basic-btn-green{
+            border: none;
+            border-radius: 5px;
+            background: none;
+            padding: 0.5em 1em;
+            outline: none;
+
+            border: 2px solid green;
+            color: green;
+            
+            &:hover{
+                background-color: green;
+                color: white;
+            }
+        }
+
         .filter-section{
             margin-bottom: 2em;
             display: flex;
@@ -318,22 +334,6 @@ export default {
                                 background: black;
                                 color: white;
                             }
-                        }
-                    }
-
-                    button{
-                        border: none;
-                        border-radius: 5px;
-                        background: none;
-                        padding: 0.5em 1em;
-                        outline: none;
-
-                        border: 2px solid black;
-                        color: black;
-                        
-                        &:hover{
-                            background-color: black;
-                            color: white;
                         }
                     }
                 }
