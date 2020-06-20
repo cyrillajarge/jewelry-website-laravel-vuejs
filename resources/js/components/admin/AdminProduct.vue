@@ -1,9 +1,11 @@
 <template>
     <div class="page-element-container">
-        <button class="dropdown-button" @click="showDropdown">{{product.name}}
+        <div class="dropdown-button" @click="showDropdown">
+            <h1>{{product.name}}</h1>
+            <button @click="deleteProduct($event, product)" class="basic-btn-red">Supprimer</button>
             <i class="fa fa-chevron-down icon" v-if="!show_dropdown" aria-hidden="true"></i>
             <i class="fa fa-chevron-up icon" v-if="show_dropdown" aria-hidden="true"></i>
-        </button>
+        </div>
         <form v-if="show_dropdown" class="page-element-data" @submit.prevent="">
             <div class="form-element">
                 <label for="name">Name:</label>
@@ -42,6 +44,18 @@ export default {
         }
     },
     methods:{
+        deleteProduct(event, product){
+            event.stopPropagation()
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.getters.token
+            
+            axios.delete('/products/' + product.id)
+            .then(response => {
+                console.log(response)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        },
         showDropdown(){
             this.show_dropdown = !this.show_dropdown
         },
@@ -93,25 +107,58 @@ export default {
             color: white;
         }
     }
+
+    .basic-btn-red{
+        border: none;
+        border-radius: 5px;
+        background: none;
+        margin: 1em;
+        padding: 0.5em 1em;
+        outline: none;
+
+        border: 2px solid red;
+        color: red;
+        
+        &:hover{
+            background-color: red;
+            color: white;
+        }
+    }
+
     .page-element-container{
         margin: 0.2em 0;
 
         .dropdown-button{
+            position: relative;
             display: flex;
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            height: 3em;
+            height: 4em;
 
             background: none;
             outline: none;
             border: 1px solid black;
             border-radius: 5px;
+            margin-bottom: 0.5em;
 
-            font-size: 1.5em;
+            h1{
+                margin: 0;
+                margin-left: 0.5em;
+                display: flex;
+                align-items: center;
+                font-size: 1.5em;
+            }
+
+            button{
+                margin-right: 4em;
+            }
 
             i{
-                font-size: 0.5em;
+                position: absolute;
+                right: 1em;
+                margin: auto 0;
+                font-size: 1em;
             }
         }
 

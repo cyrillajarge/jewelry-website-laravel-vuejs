@@ -76,6 +76,7 @@ export default {
             // border-bottom-left-radius: 5px;
             // border-bottom-right-radius: 5px;
             width: 100%;
+            z-index: 50;
             
             .select-item{
                 width: 100%;
