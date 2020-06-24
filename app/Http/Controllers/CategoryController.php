@@ -60,7 +60,15 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'image_id' => 'required',
+            'name' => 'required|string',
+            'description' => 'required|string',
+        ]);
+                
+        $category = Category::create($data);
+        
+        return response($category, 201);
     }
 
     /**
@@ -94,7 +102,15 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $data = $request->validate([
+            'image_id' => 'required',
+            'name' => 'required|string',
+            'description' => 'required|string',
+        ]);
+                
+        $category->update($data);
+        
+        return response($category, 201);
     }
 
     /**
@@ -105,6 +121,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        return response()->json('Deleted category.', 200);
     }
 }

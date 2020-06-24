@@ -39,6 +39,9 @@ Route::middleware('auth:api')->delete('/products/{product}','ProductController@d
 Route::get('/categories', 'CategoryController@index');
 Route::get('/categories/{category}', 'CategoryController@show');
 Route::get('/categories/{category}/products', 'CategoryController@products');
+Route::middleware('auth:api')->post('/category', 'CategoryController@store');
+Route::middleware('auth:api')->patch('/categories/{category}', 'CategoryController@update');
+Route::middleware('auth:api')->delete('/categories/{category}', 'CategoryController@destroy');
 
 
 Route::get('/images','ImageController@index');

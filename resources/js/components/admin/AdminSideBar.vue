@@ -10,6 +10,7 @@
                 <div class="admin-sidebar-sub" v-if="pages_submenu">
                     <router-link v-for="page in allParentPages" v-bind:key="page.id" class="sidebar-link" :to="{ name: 'admin-page', params: { slug: page.slug, id: page.id }}">{{page.name}}</router-link>
                 </div>
+                <router-link class="sidebar-link" to="/admin/categories">CATÉGORIES</router-link>
                 <router-link class="sidebar-link" to="/admin/produits">PRODUITS</router-link>
                 <router-link class="sidebar-link" to="/admin/events">EVENEMENTS</router-link>
                 <router-link class="sidebar-link" to="/admin/images">IMAGES</router-link>

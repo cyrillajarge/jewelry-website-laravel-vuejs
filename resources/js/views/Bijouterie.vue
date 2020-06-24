@@ -24,7 +24,7 @@
                 <div class="content-container" style="order:">
                     <h2>{{categorie.name}}</h2>
                     <p>{{categorie.content}}</p>
-                    <router-link class="base-btn-light" :to="categorie.link">Découvrir</router-link>
+                    <!-- <router-link class="base-btn-light" :to="{name: products, params: {slug: , id: }}">Découvrir</router-link> -->
                 </div>
             </div>
         </div>

@@ -71,7 +71,6 @@
                 <li class="sub-menu"><a @click="showJ" v-click-outside="hideJ">Joaillerie</a>
                     <ul v-show="showJoaillerie" id="joaillerie">
                         <li @click="showMobile"><router-link to="/joaillerie/bijouterie">Bijouterie</router-link></li>
-                        <li @click="showMobile"><router-link to="/joaillerie/alliances">Alliances</router-link></li>
                         <li @click="showMobile"><router-link to="/joaillerie/haute-joaillerie">Haute Joaillerie</router-link></li>
                     </ul>
                 </li>

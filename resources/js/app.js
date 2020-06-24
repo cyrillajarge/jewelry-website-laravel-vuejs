@@ -18,13 +18,14 @@ import Reparation from './views/Reparation'
 import Gravure from './views/Gravure'
 import Entretien from './views/Entretien'
 import Bijouterie from './views/Bijouterie'
-import Alliances from './views/Alliances'
+import Products from './views/Products'
 
-import AllianceInfo from './views/AllianceInfo'
+import ProductInfo from './views/ProductInfo'
 
 import AdminPanel from './views/admin/AdminPanel'
 import AdminEvents from './views/admin/AdminEvents'
 import AdminPage from './views/admin/AdminPage'
+import AdminCategories from './views/admin/AdminCategories'
 import AdminProducts from './views/admin/AdminProducts'
 import AdminSettings from './views/admin/AdminSettings'
 import AdminImages from './views/admin/AdminImages'
@@ -105,16 +106,16 @@ const router = new VueRouter({
             component: Bijouterie
         },
         {
-            path: '/joaillerie/alliances',
-            name: 'alliances',
+            path: '/joaillerie/:id/:slug',
+            name: 'products',
             meta: { layout: "guest"},
-            component: Alliances
+            component: Products
         },
         {
             path: '/joaillerie/alliance/:id',
-            name: 'alliance-info',
+            name: 'product-info',
             meta: { layout: "guest"},
-            component: AllianceInfo
+            component: ProductInfo
         },
         {
             path: '/admin',
@@ -133,6 +134,12 @@ const router = new VueRouter({
             name: 'admin-page',
             meta: {layout: "admin"},
             component: AdminPage,
+        },
+        {
+            path: '/admin/categories',
+            name: 'admin-categories',
+            meta: {layout: "admin"},
+            component: AdminCategories,
         },
         {
             path: '/admin/produits',

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="alliances-full-header">
+        <div class="products-full-header">
             <FullHeightHeader :image="image"/>
             <div class="overlay"></div>
             <div class="full-header-content">
@@ -8,15 +8,15 @@
             </div>
             <JumpingArrow class="jumping-arrow" />
         </div>
-        <div class="alliances-intro">
+        <div class="product-intro">
             <p>
                 Chaque union est unique c'est pourquoi chaque bijou devrait l'être également.<br>
                 Réalisez une création sur-mesure ou découvrez notre sélection d'idées, chaque modèle étant personnalisable à votre guise.
             </p> 
         </div>
-        <div class="alliances-container">
+        <div class="products-container">
             <h1>Nos alliances</h1>
-            <div class="alliances-cards-container">
+            <div class="products-cards-container">
                 <div class="product-card" v-for="(product, i) in products" v-bind:key="i">
                     <ProductCard v-bind:product="product" />
                 </div>
@@ -111,7 +111,7 @@ export default {
 <style lang="scss" scoped>
 @import '~@/_variables.scss';
 
-    .alliances-full-header{
+    .products-full-header{
         position: relative;
         height: calc(100vh - 70px - 53px);
 
@@ -149,7 +149,7 @@ export default {
         }
     }
 
-    .alliances-intro{
+    .product-intro{
         display: flex;
         flex-direction: column;
         width: 60%;
@@ -164,7 +164,7 @@ export default {
         }
     }
 
-    .alliances-container{
+    .products-container{
         width: 80%;
         margin: 0 auto;
         
@@ -186,7 +186,7 @@ export default {
             }
         }
 
-        .alliances-cards-container{
+        .products-cards-container{
             margin: 3em 0;
             display: flex;
             flex-wrap: wrap;

@@ -305,15 +305,6 @@ export default {
                         }
                     }
 
-                    .v-select{
-                        width: 70%;
-                    }
-
-                    .vs__dropdown-toggle {
-                        background: red !important;
-                        border: none;
-                    }
-
                     select{
                         width: 70%;
                         border: none;

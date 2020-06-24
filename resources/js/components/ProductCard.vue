@@ -5,7 +5,7 @@
         <div class="product-card-content">
             <h1>{{ product.name }}</h1>
             <p>{{ product.description }}</p>
-            <router-link class="base-btn-dark" :to="{ name: product.routename, params: { id: product.id }}">Voir la fiche</router-link>
+            <router-link class="base-btn-dark" :to="{ name: product-info, params: { slug: product.slug, id: product.id }}">Voir la fiche</router-link>
         </div>
     </div>
 </template>

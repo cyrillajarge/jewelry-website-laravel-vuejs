@@ -17,18 +17,24 @@ class CategorySeeder extends Seeder
 
         DB::table('categories')->insert([
             'name' => 'alliance',
+            'description' => 'Aussi bien en cadeau que pour une demande, la bague est le bijoux préferé.',
+            'image_id' => 1,
             'created_at' => $date,
             'updated_at' => $date
         ]);
 
         DB::table('categories')->insert([
             'name' => 'collier',
+            'description' => 'Quotidien ou occasionnel. Aucune limite, pour n\'importe quel style.',
+            'image_id' => 2,
             'created_at' => $date,
             'updated_at' => $date
         ]);
 
         DB::table('categories')->insert([
             'name' => 'bracelet',
+            'description' => 'Sûrement le bijoux qui correspond autant aux femmes qu\'aux hommes ou encore enfants. Pour vous même, ou pour un cadeau original',
+            'image_id' => 3,
             'created_at' => $date,
             'updated_at' => $date
         ]);

@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
             EventSeeder::class,
             ImageSeeder::class,
             PelementSeeder::class,
+            CategorySeeder::class,
+            ProductSeeder::class
         ]);
     }
 }
