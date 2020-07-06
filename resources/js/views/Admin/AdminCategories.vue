@@ -4,7 +4,7 @@
         <div class="category-cards-container">
             <AdminCategoryCard v-for="category in allCategories" v-bind:key="category.id" :category="category"/>
         </div>
-        <button class="add-button" type="button" @click="triggerModal">Ajouter une catégrorie</button>
+        <button class="add-button" type="button" @click="triggerModal">Ajouter une catégorie</button>
         <div v-if="modal" id="category-modal">
             <div class="modal-container">
                 <h1>Ajouter une catégorie</h1>
@@ -12,6 +12,10 @@
                     <div class="form-element">
                         <label for="titre">Nom:</label>
                         <input name="titre" type="text" placeholder="Nom" v-model="name">
+                    </div>
+                    <div class="form-element">
+                        <label for="slug">Slug:</label>
+                        <input name="slug" type="text" placeholder="Slug" v-model="slug">
                     </div>
                     <div class="form-element">
                         <label for="description">Description:</label>
@@ -50,6 +54,7 @@ export default {
             'page_title': "Catégories",
             'modal': false,
             'name': "",
+            'slug': "",
             'description': "",
             'selected_image': ""
         }
@@ -75,6 +80,7 @@ export default {
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.getters.token
             axios.post('/category' ,{
                 'name': this.name,
+                'slug': this.slug,
                 'description' : this.description,
                 'image_id' : this.selected_image[0]
             })

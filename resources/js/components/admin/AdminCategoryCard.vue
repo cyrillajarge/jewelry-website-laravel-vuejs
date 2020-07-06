@@ -9,18 +9,22 @@
         <form v-if="show_dropdown" class="page-element-data" action="" @submit.prevent="updateCategory">
             <div class="form-element">
                 <label for="name">Name:</label>
-                <input type="text" name="name" placeholder="Nom du produit" v-model="name">
+                <input type="text" name="name" v-model="name">
+            </div>
+            <div class="form-element">
+                <label for="slug">Slug:</label>
+                <input type="text" name="slug" v-model="slug">
             </div>
             <div class="form-element">
                 <label for="description">Description:</label>
-                <textarea name="description" placeholder="Description" v-model="description"></textarea>
+                <textarea name="description" v-model="description"></textarea>
             </div>
             <div class="selected-images-container">
                 <div v-if="selected_image.length == 1" class="selected-image-container">
                     <img :src="getSrc(selected_image[0])" alt="selected">
                 </div>
             </div>
-            <button class="basic-btn-black" id="choose-btn" type="button" @click="triggerImagePicker">Choisir images</button>
+            <button class="basic-btn-black" id="choose-btn" type="button" @click="triggerImagePicker">Choisir image</button>
             <button id="modify-btn" type="submit">Sauvegarder</button>
         </form>
         <AdminImagePicker ref="image_picker" :allowed="1" v-bind:selected="selected_image" v-on:selectedImages="setSelectedImage"/>
@@ -39,6 +43,7 @@ export default {
         return{
             'show_dropdown': false,
             'name': this.category.name,
+            'slug': this.category.slug,
             'description': this.category.description,
             'selected_image': this.initializeSelected()
         }

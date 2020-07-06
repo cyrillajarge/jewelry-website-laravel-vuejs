@@ -61,8 +61,9 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'image_id' => 'required',
+            'image_id' => 'required|integer',
             'name' => 'required|string',
+            'slug' => 'required|string',
             'description' => 'required|string',
         ]);
                 
