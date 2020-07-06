@@ -33,7 +33,17 @@
         <div class="categories-suggestions">
             <h1 class="suggestions-title">Ces catégories peuvent aussi vous intéresser</h1>
             <div class="categories-suggestions-container">
-
+                <router-link
+                    :to="'/bijouterie/'+suggestion.slug"
+                    class="suggestion-card-container"
+                    v-for="suggestion in getCategoriesSuggestions()" v-bind:key="suggestion.id">
+                    <img :src="getSrc(suggestion.image_id)" alt="Suggestion">
+                    <div class="overlay"></div>
+                    <div class="suggestion-card-content">
+                        <h1>{{suggestion.name}}</h1>
+                        <button class="base-btn-dark">Plus</button>
+                    </div>
+                </router-link>
             </div>
         </div>
     </div>
@@ -58,19 +68,39 @@ export default {
             },
             'category': ''
         }
+    },	
+    beforeRouteUpdate (to, from, next) {
+        this.getProducts(to.params.slug)
+        next();
     },
-    mounted(){
-        axios.get('/categories/' + this.$route.params.slug + '/products?include=products, products.images')
-        .then(response => {
-            this.category = response.data[0]
-        })
-        .catch(error => {
-            console.log(error)
-        })
+    created(){
+        this.getProducts(this.$route.params.slug)
     },
     methods: {
+        getProducts(slug){
+            axios.get('/categories/' + slug + '/products?include=products, products.images')
+            .then(response => {
+                this.category = response.data[0]
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        },
         capitalize(name){
             return name.charAt(0).toUpperCase() + name.slice(1)
+        },
+        getSrc(id){
+            return this.$store.getters.allImages.find(item => item.id == id).url
+        },
+        getCategoriesSuggestions(){
+            let category_slug = this.$route.params.slug
+            let categories = this.$store.getters.allCategories
+            categories = categories.filter((obj) => obj.slug != category_slug)
+            for (let i = categories.length; i; i--) {
+                let j = Math.floor(Math.random() * i);
+                [categories[i - 1], categories[j]] = [categories[j], categories[i - 1]];
+            }
+            return categories.splice(0,3)
         }
     }
 }
@@ -194,6 +224,7 @@ export default {
                 position: relative;
                 background: none;
                 z-index: 1;
+                font-size: 30px;
 
                 &::after{
                     position: absolute;
@@ -211,6 +242,57 @@ export default {
                 display: flex;
                 flex-direction: row;
                 justify-content: space-around;
+
+                .suggestion-card-container{
+                    position: relative;
+                    width: 300px;
+                    height: 300px;
+
+                    img{
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+
+                    .overlay{
+                        background-color: white;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        opacity: 0.2;
+                        transition: opacity 0.5s ease-in-out;
+                    }
+
+                    .suggestion-card-content{
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%,-50%);
+                        display: flex;
+                        flex-direction: column;
+
+                        h1{
+                            font-size: 25px;
+                            color: black;
+                            margin-bottom: 1em;
+                        }
+
+                        button{
+                            border: none;
+                            background: none;
+                        }
+                        
+                    }
+
+                    &:hover{
+                        .overlay{
+                            opacity: 1;
+                            transition: opacity 0.5s ease-in-out;
+                        }
+                    }
+                }
             }
         }
     }
