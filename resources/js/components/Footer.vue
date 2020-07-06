@@ -46,7 +46,7 @@ export default {
     @import '~@/_variables.scss';
 
     .footer{
-        border-top: 1px solid #000;
+        // border-top: 1px solid #000;
         margin: 0 auto;
         width: 100%;
         padding-top: 20px;
@@ -182,8 +182,8 @@ export default {
 
         .footer-signature{
             width: 100%;
-            background-color: black;
-            color: white;
+            background-color: white;
+            color: black;
             display: flex;
             justify-content: center;
             

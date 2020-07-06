@@ -66,17 +66,57 @@ export default {
 
 
         .event{
+            position: relative;
             display: flex;
-            border-left: 2px solid white;
+            // border-left: 2px solid black;
             align-items: center;
             width: 100%;
             margin: 1rem 0;
             transition: transform 0.2s ease-in-out;
+            z-index: 1;
+
+            &::before{
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: -90px;
+                height: 20px;
+                background: black;
+                transform: translateY(-50%) rotateZ(-45deg);
+                width: 10%;
+                z-index: -1;
+                transition: transform 0.25s ease-out;
+            }
+
+            &::after{
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: -90px;
+                height: 20px;
+                background: black;
+                transform: translateY(-50%) rotateZ(45deg);
+                width: 10%;
+                z-index: -1;
+                transition: transform 0.25s ease-out;
+            }
 
             &:hover{
-                transform: translateX(30px);
-                transition: transform 0.2s ease-in-out;
+                &::before{
+                   transform: translateY(-50%) rotateZ(-90deg);
+                   transition: transform 0.25s ease-out;
+                }
+
+                &::after{
+                    transform: translateY(-50%);
+                    transition: transform 0.25s ease-out;
+                }
             }
+
+            // &:hover{
+            //     transform: translateX(30px);
+            //     transition: transform 0.2s ease-in-out;
+            // }
 
             #date{
                 display: flex;
@@ -90,7 +130,7 @@ export default {
                 p{
                     font-size: calc(10px + (20 - 10) * ((100vw - 300px) / (1600 - 300)));
                     margin: 0;
-                    color: white;
+                    color: black;
                 }
 
                 #day{
@@ -110,7 +150,7 @@ export default {
                 flex-grow: 1;
 
                 h1, p{
-                    color: white;
+                    color: black;
                 }
 
                 h1{
@@ -128,7 +168,7 @@ export default {
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                color: white;
+                color: black;
 
                 p{
                     margin: 0;

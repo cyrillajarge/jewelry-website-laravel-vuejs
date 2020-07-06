@@ -1,15 +1,15 @@
 <template>
-    <div class="alliance-info">
-        <h1 class="alliance-name">Alliance #1</h1>
+    <div v-if="this.product" class="alliance-info">
+        <h1 class="alliance-name">{{this.product.name}}</h1>
         <div class="alliance-image-viewer">
             <div class="alliance-big">
                 <div class="alliance-big-placeholder">
-                    <img :src="images[selected]" alt="Selected">
+                    <img :src="this.product.images[this.selected].url" :alt="this.product.images[selected].name">
                 </div>
             </div>
             <div class="alliance-thumbnails">
-                <div class="thumbnail-placeholder" v-for="(image,i) in images" v-bind:key="i" @click="selectImage(i)">
-                    <img :src="image" alt="Image">
+                <div class="thumbnail-placeholder" v-for="(image,i) in this.product.images" v-bind:key="image.id" @click="selectImage(i)">
+                    <img :src="image.url" alt="Image">
                     <div v-if="i != selected" class="overlay"></div>
                 </div>
             </div>
@@ -17,14 +17,11 @@
         <div class="alliance-info">
             <div class="tabs">
                 <div class="tab">
-                    <button class="tablinks" @click="openTab('Description')" id="defaultOpen">Description.</button>
+                    <button class="tablinks" @click="openTab('Description')" ref="defaultopen">Description.</button>
                     <button class="tablinks" @click="openTab('Composition')">Composition.</button>
                 </div>
                 <div id="Description" class="tabcontent">
-                    <p>
-                        Simple, efficace, l'anneau est fait pour les gens discret qui souhaite officialiser leur union.<br>
-                        Adapté à tous types de budget, il dispose d'un intérieur confort, pratique à porter tous les jours.
-                    </p>
+                    <p>{{this.product.description}}</p>
                 </div>
                 <div id="Composition" class="tabcontent">
                     <p>La bonne composition</p>
@@ -36,10 +33,10 @@
         </div>
         <div class="alliances-suggestions-wrapper">
             <div class="alliances-suggestions-container">
-                <h1>Suggestions</h1>
+                <h1>Ces bijoux peuvent peut-être vous intéresser</h1>
                 <div class="suggestions-cards-container">
-                    <div class="suggestion-card" v-for="(suggestion, i) in suggestions" v-bind:key="i">
-                        <ProductCard v-bind:product="suggestion" />
+                    <div class="suggestion-card" v-for="(suggestion, i) in this.suggestions" v-bind:key="i">
+                        <ProductCard v-bind:product="suggestion"/>
                     </div>
                 </div>
             </div>
@@ -56,34 +53,9 @@ export default {
     },
     data () {
         return {
-            "images": [
-                "/img/entretien.jpg",
-                "/img/services.jpg",
-                "/img/travis-grillz.jpg"
-            ],
             "selected": 0,
-            "suggestions": [
-                {
-                    "image":{
-                        "name": "Ring",
-                        "url": "/img/ring.png"
-                    },
-                    "name": "Alliance #1",
-                    "description": "The good ring",
-                    "routename": "alliance-info",
-                    "id": "123"
-                },
-                {
-                    "image":{
-                        "name": "Ring",
-                        "url": "/img/ring.png"
-                    },
-                    "name": "Alliance #2",
-                    "description": "The good ring",
-                    "routename": "alliance-info",
-                    "id": "123"
-                }
-            ]
+            "suggestions": '',
+            'product' : ''
         }
     },
     methods: {
@@ -97,10 +69,38 @@ export default {
                 tabcontent[i].style.display = "none";
             }
             document.getElementById(id).style.display = "flex";
+        },
+        getProduct(){
+            axios.get('/products/' + this.$route.params.product_slug + '?include=images')
+            .then(response => {
+                this.product = response.data[0]
+                this.$nextTick(() => {
+                    this.$refs.defaultopen.click()
+                })
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        },
+        getSuggestions(){
+            axios.get('/products?include=images')
+            .then(response => {
+                const shuffled = response.data.sort(() => 0.5 - Math.random())
+                let chosen = shuffled.slice(0, 2)
+                this.suggestions = chosen
+                for(var i=0;i<this.suggestions.length;i++){
+                    var id = this.suggestions[i].category_id
+                    this.$store.getters.allCategories
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
         }
     },
     mounted() {
-        document.getElementById("defaultOpen").click();
+        this.getProduct()
+        this.getSuggestions()
     }
 }
 </script>
@@ -252,7 +252,7 @@ export default {
         .alliances-suggestions-wrapper{
             border-top: 1px solid white;
             background-color: black;
-            padding-top: 2em;
+            padding: 2em 0;
             
             .alliances-suggestions-container{
                 width: 90%;

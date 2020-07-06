@@ -102,9 +102,9 @@ export default {
             this.category = value
         },
         fetchProducts(){
-            axios.get('/categories/' + this.filter.id + '/products?include=images')
+            axios.get('/categories/' + this.filter.slug + '/products?include=products,products.images')
             .then(response => {
-                this.products = response.data
+                this.products = response.data[0].products
             })
             .catch(error => {
                 console.log(error)

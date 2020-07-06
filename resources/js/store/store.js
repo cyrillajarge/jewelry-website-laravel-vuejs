@@ -7,7 +7,7 @@ axios.defaults.baseURL = 'http://wood-website.test/api'
 
 export const store = new Vuex.Store({
     state: {
-        token: localStorage.getItem('access_token') || null,
+        token: sessionStorage.getItem('access_token') || null,
         events: [],
         pages: [],
         images: [],
@@ -98,11 +98,11 @@ export const store = new Vuex.Store({
             if(context.getters.loggedIn){
                 axios.post('/logout')
                 .then(response => {
-                    localStorage.removeItem('access_token')
+                    sessionStorage.removeItem('access_token')
                     context.commit('destroyToken')
                 })
                 .catch(error => {
-                    localStorage.removeItem('access_token')
+                    sessionStorage.removeItem('access_token')
                     context.commit('destroyToken')
                 })
             }
@@ -115,7 +115,7 @@ export const store = new Vuex.Store({
             .then(response => {
                 const token = response.data.access_token
                 
-                localStorage.setItem('access_token', token)
+                sessionStorage.setItem('access_token', token)
                 context.commit('retrieveToken',token)
             })
               .catch(error => {

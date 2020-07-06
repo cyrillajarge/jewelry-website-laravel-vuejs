@@ -1,11 +1,15 @@
 <template>
     <div>
-        <div class="bijouterie-full-header">
-            <FullHeightHeader :image="image"/>
-            <div class="overlay"></div>
-            <div class="full-header-content">
-                <h1>Découvrez notre large gamme de bijoux</h1>
-                <router-link to="/contact" class="base-btn-light">Prendre rendez-vous</router-link>
+        <div class="bijouterie-landing">
+            <div class="bijouterie-image-container">
+                <div class="image-container">
+                    <img src="/img/bijouterie-joaillerie.jpg" alt="Bijouterie">
+                </div>
+                <div class="bijouterie-overlay"></div>
+                <div class="landing-image-text">
+                    <h1>Découvrez notre large gamme de bijoux</h1>
+                    <router-link to="/contact" class="base-btn-light">Prendre rendez-vous</router-link>
+                </div>
             </div>
             <JumpingArrow class="jumping-arrow" />
         </div>
@@ -17,14 +21,14 @@
                 Nous sommes bien sûr ouvert à toute proposition, demande ,ou questionnement via la page contact</p> 
         </div>
         <div class="bijouterie-categorie-sections">
-            <div class="bijouterie-categorie" v-for="(categorie,i) in categories" v-bind:key="i">
+            <div class="bijouterie-categorie" v-for="category in allCategories" v-bind:key="category.id">
                 <div class="image-container" style="order:">
-                    <img :src="categorie.img.url" :alt="categorie.img.name">
+                    <img :src="getImage(category.image_id).url" :alt="getImage(category.image_id).name">
                 </div>
                 <div class="content-container" style="order:">
-                    <h2>{{categorie.name}}</h2>
-                    <p>{{categorie.content}}</p>
-                    <!-- <router-link class="base-btn-light" :to="{name: products, params: {slug: , id: }}">Découvrir</router-link> -->
+                    <h2>{{capitalize(category.name)}}</h2>
+                    <p>{{category.description}}</p>
+                    <router-link class="base-btn-dark" :to="{ name: 'category', params: {slug: category.slug}}">Découvrir</router-link>
                 </div>
             </div>
         </div>
@@ -45,63 +49,20 @@ export default {
             'image': {
                 "name": "Bijouterie",
                 "url": "/img/bijouterie-joaillerie.jpg"
-            },
-            'categories': [
-                {
-                    "name": "Bague",
-                    "content": "Aussi bien en cadeau que pour une demande, la bague est le bijoux préferé",
-                    "img": {
-                        "name": "Bague",
-                        "url": "/img/premieres-boucles.jpg"
-                    },
-                    "link": "",
-                },
-                {
-                    "name": "Collier",
-                    "content": "Quotidien ou occasionnel. Aucune limite, pour n'importe quel style.",
-                    "img": {
-                        "name": "Collier",
-                        "url": "/img/premieres-boucles.jpg"
-                    },
-                    "link": ""
-                },
-                {
-                    "name": "Bracelet",
-                    "content": "Sûrement le bijoux qui correspond autant aux femmes qu'aux hommes ou encore enfants. Pour vous même, ou pour un cadeau original.",
-                    "img": {
-                        "name": "Bracelet",
-                        "url": "/img/premieres-boucles.jpg"
-                    },
-                    "link": ""
-                },
-                {
-                    "name": "Boucles d'oreilles",
-                    "content": "Adaptées à tous, pas de soucis de taille ni de style. Le cadeau parfait pour créer ou compléter des parures.",
-                    "img": {
-                        "name": "Boucles d'oreilles",
-                        "url": "/img/premieres-boucles.jpg"
-                    },
-                    "link": ""
-                },
-                {
-                    "name": "Pendentif",
-                    "content": "Quelque chose vous tient à cœur. Profitez en pour l'avoir toujours auprès de vous.",
-                    "img": {
-                        "name": "Pendentif",
-                        "url": "/img/premieres-boucles.jpg"
-                    },
-                    "link": ""
-                },
-                {
-                    "name": "Autres",
-                    "content": "Aussi bien en cadeau que pour une demande, la bague est le bijoux préferé",
-                    "img": {
-                        "name": "Autres",
-                        "url": "/img/premieres-boucles.jpg"
-                    },
-                    "link": ""
-                }
-            ]
+            }
+        }
+    },
+    methods: {
+        getImage(id){
+            return this.$store.getters.allImages.find(item => item.id == id)
+        },
+        capitalize(name){
+            return name.charAt(0).toUpperCase() + name.slice(1)
+        }
+    },
+    computed: {
+        allCategories(){
+            return this.$store.getters.allCategories
         }
     }
 }
@@ -110,59 +71,91 @@ export default {
 <style lang="scss" scoped>
     @import '~@/_variables.scss';
 
-    .bijouterie-full-header{
-        position: relative;
+    .bijouterie-landing{
+        display: flex;
+        flex-direction: column;
+        justify-self: center;
+        align-items: center;
         height: calc(100vh - 70px - 53px);
 
-        .overlay{
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: black;
-            opacity: 0.15;
-        }
-        
-        .full-header-content{
-            position: absolute;
+        .bijouterie-image-container{
+            position: relative;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%,-50%);
+            flex-direction: row;
+            width: 100%;
+            height: 75%;
+            margin: auto 0;
+            
+            .image-container{
+                position: absolute;
+                height: 100%;
+                width: 75%;
 
-            h1{
-                font-size: calc(44px + (60 - 44) * ((100vw - 300px) / (1600 - 300)));
+                img{
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+
+            .bijouterie-overlay{
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgb(0,0,0);
+                background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 75%, rgba(0,0,0,1) 100%)
+            }
+
+            .landing-image-text{
+                position: absolute;
+                top: 50%;
+                right: 10%;
+                width: 50%;
+                transform: translateY(-50%);
                 text-align: center;
-                margin-bottom: 2em;
                 color: white;
-            }
+                display: flex;
+                flex-direction: column;
 
-            a{
-                font-size: calc(14px + (20 - 14) * ((100vw - 300px) / (1600 - 300)));
-            }
+                h1{
+                    align-self: center;
+                    font-weight: 400;
+                    margin-bottom: 1em;
+                    position: relative;
+                    background: none;
+                    z-index: 1;
 
+                    &::after{
+                        position: absolute;
+                        bottom: -5px;
+                        left: 0;
+                        content: "";
+                        height: 20px;
+                        width: 100%;
+                        background-color: grey;
+                        z-index: -1;
+                    }
+                }
+            }
         }
 
         .jumping-arrow{
             position: absolute;
             bottom: 0;
-            left: 50%;
         }
     }
 
     .bijouterie-intro{
         display: flex;
         flex-direction: column;
-        width: 60%;
+        width: 80%;
         margin: 0 auto;
 
         p{
             margin: 6em 0;
-            color: white;
+            color: black;
             line-height: 2em;
             text-align: center;
             font-size: calc(14px + (16 - 14) * ((100vw - 300px) / (1600 - 300)));
@@ -198,7 +191,7 @@ export default {
                 align-items: center;
 
                 h2,p{
-                    color: white;
+                    color: black;
                 }
 
                 p{

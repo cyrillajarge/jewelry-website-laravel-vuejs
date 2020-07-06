@@ -16,7 +16,8 @@ class CategorySeeder extends Seeder
         $date = Carbon::now()->format('Y-m-d H:i:s');
 
         DB::table('categories')->insert([
-            'name' => 'alliance',
+            'name' => 'Alliances',
+            'slug' => 'alliances',
             'description' => 'Aussi bien en cadeau que pour une demande, la bague est le bijoux préferé.',
             'image_id' => 1,
             'created_at' => $date,
@@ -24,7 +25,8 @@ class CategorySeeder extends Seeder
         ]);
 
         DB::table('categories')->insert([
-            'name' => 'collier',
+            'name' => 'Colliers',
+            'slug' => 'colliers',
             'description' => 'Quotidien ou occasionnel. Aucune limite, pour n\'importe quel style.',
             'image_id' => 2,
             'created_at' => $date,
@@ -32,7 +34,8 @@ class CategorySeeder extends Seeder
         ]);
 
         DB::table('categories')->insert([
-            'name' => 'bracelet',
+            'name' => 'Bracelets',
+            'slug' => 'bracelets',
             'description' => 'Sûrement le bijoux qui correspond autant aux femmes qu\'aux hommes ou encore enfants. Pour vous même, ou pour un cadeau original',
             'image_id' => 3,
             'created_at' => $date,

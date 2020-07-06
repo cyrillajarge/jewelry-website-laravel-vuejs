@@ -14,7 +14,7 @@ export default {
     .arrow{
         i{
             font-size: 24px;
-            color: white;
+            color: black;
             animation: arrow 0.5s ease infinite alternate;
         }
     }

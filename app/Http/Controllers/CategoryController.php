@@ -19,7 +19,7 @@ class CategoryController extends Controller
         $categories = QueryBuilder::for(Category::class)
             ->allowedFilters(['name'])
             ->allowedFields(['products.id','products.category_id','products.name'])
-            ->allowedIncludes(['products','products.images'])
+            ->allowedIncludes(['products','image','products.images'])
             ->get();
 
         return $categories;
@@ -28,15 +28,15 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  string  $slug
      * @param \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function products(Request $request, $id)
+    public function products(Request $request, $slug)
     {
-        $products = QueryBuilder::for(Product::class)
-            ->allowedIncludes(['images'])
-            ->where('category_id',$id)
+        $products = QueryBuilder::for(Category::class)
+            ->allowedIncludes(['products', 'products.images'])
+            ->where('slug', $slug)
             ->get();
         
         return $products;

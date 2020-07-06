@@ -1,9 +1,9 @@
 <template>
-    <div class="application">
-        <div class="header">
-            <Header />
+    <div class="application-wrapper">
+        <div class="header-wrapper">
+            <Header class="header" />
         </div>
-        <div class="main">
+        <div class="main-wrapper">
             <slot />
         </div>
         <Footer/>
@@ -24,18 +24,25 @@ export default {
 <style lang="scss">
     @import '~@/_variables.scss';
 
-    .application{
+    .application-wrapper{
         background-color:white;
     }
 
-    .header{
+    .header-wrapper{
         width: 100%;
-        position: fixed;
-        z-index: 999;
+
+        .header{
+            z-index: 999;
+            width: 100%;
+            // min-width: 1300px;
+            position: fixed;
+        }
     }
 
-    .main{
-        background-color: black;
+    .main-wrapper{
+        width: 1300px;
+        margin: 0 auto;
+        background-color: white;
         padding-top: calc(70px + 53px);
     }
 

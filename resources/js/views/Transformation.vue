@@ -1,20 +1,26 @@
 <template>
     <div class="transformation-page">
-        <div class="transformation-header">
-            <h1 class="transformation-title">Services de transformation.</h1>
-            <p class="transformation-text">
-                Vous souhaitez redonner ses lettres de noblesse à vos bijoux ou tout simplement une envie de changement.<br>
-                Venez exposer votre projet à notre équipe.<br>
-                Nous saurons vous conseiller pour leur donner une nouvelle vie correspondant à vos attentes et vous accompagner dans ce merveilleux projet.<br>
-                Nous réaliserons un devis accompagné d'un design 3D pour découvrir le rendu
-            </p>
-            <div class="image-container">
-                <img src="/img/transformation-bijoux.png" alt="Transformation">
+        <div class="transformation-landing">
+            <div class="transformation-image-container">
+                <div class="image-container">
+                    <img src="/img/transformation-bijoux.png" alt="Transformation">
+                </div>
+                <div class="transformation-image-overlay"></div>
+                <div class="transformation-image-text">
+                    <h1>Service de transformation</h1>
+                    <p>
+                        Vous souhaitez redonner ses lettres de noblesse à vos bijoux ou tout simplement une envie de changement.<br>
+                        Venez exposer votre projet à notre équipe.
+                        Nous saurons vous conseiller pour leur donner une nouvelle vie correspondant à vos attentes et vous accompagner dans ce merveilleux projet.<br>
+                        Nous réaliserons un devis accompagné d'un design 3D pour découvrir le rendu
+                    </p>
+                </div>
             </div>
+            <JumpingArrow class="jumping-arrow"/>
         </div>
         <div class="transformation-middle-section">
             <div class="middle-content-container">
-                <p>
+                 <p>
                     Chaque bijou est manipulé avec le plus grand soin et chaque pièce d'origine retirée vous sera restituée.<br> 
                     Toute intervention garantit vos bijoux contre vols et pertes durant la période de prise en charge.<br>
                     Afin de vous garantir une sécurité maximale , chaque intervention, donne lieu à une fiche de prise en charge à présenter lors de la récupération du bijou.
@@ -22,11 +28,19 @@
                 <router-link to="/contact" class="base-btn-dark devis-btn">Obtenir un devis</router-link>
             </div>
         </div>
+        <ServicesSuggestions />
     </div>
 </template>
 
 <script>
+import JumpingArrow from '../components/JumpingArrow'
+import ServicesSuggestions from '../components/ServicesSuggestions'
+
 export default {
+    components: {
+        JumpingArrow,
+        ServicesSuggestions
+    }
     
 }
 </script>
@@ -35,156 +49,126 @@ export default {
     @import '~@/_variables.scss';
 
     h1{
-        font-size: calc(20px + (40 - 20) * ((100vw - 300px) / (1600 - 300)));
+        font-size: 35px;
     }
 
     p{
-        font-size: calc(12px + (16 - 12) * ((100vw - 300px) / (1600 - 300)));
         line-height: 2em;
-        text-align: justify;
     }
 
     .transformation-page{
         display: flex;
         flex-direction: column;
 
-        .transformation-header{
-            background-color: black;
-            padding-top: 3em;
-            padding-bottom: 3em;
-            margin: 0 10em;
-            position: relative;
+        .transformation-landing{
+            display: flex;
+            flex-direction: column;
+            justify-self: center;
+            align-items: center;
+            height: calc(100vh - 70px - 53px);
 
-            h1{
+            .transformation-image-container{
                 position: relative;
-                margin: 2em 0;
-                color: white;
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                height: 75%;
+                margin: auto 0;
 
-                &::after{
-                    position: absolute;
-                    bottom: -2px;
-                    left: 0;
-                    content: "";
-                    height: 2px;
-                    width: 10%;
-                    background-color: white;
+                .image-container{
+                    height: 100%;
+                    width: 75%;
+
+                    img{
+                        object-fit: cover;
+                        width: 100%;
+                        height: 100%;
+                    }
                 }
-            }
 
-            p{
-                color: white;
-                width: 50%;
-                padding: 1em 0;
-            }
-
-            .image-container{
-                position: absolute;
-                height: 30vw;
-                width: 30vw;
-                bottom: 0;
-                transform: translateY(75%);
-                right: 0;
-
-                img{
+                .transformation-image-overlay{
+                    position: absolute;
+                    top: 0;
+                    left: 0;
                     width: 100%;
                     height: 100%;
-                    object-fit: cover;
-                    filter: grayscale(1);
+                    background: rgb(2,0,36);
+                    background: linear-gradient(90deg, rgba(2,0,36,0) 0%, rgba(0,0,0,1) 75%, rgba(0,0,0,1) 100%)
+                }
+
+                .jumping-arrow{
+                    position: absolute;
+                    bottom: 0;
+                }
+
+                .transformation-image-text{
+                    position: absolute;
+                    top: 50%;
+                    right: 10%;
+                    width: 40%;
+                    transform: translateY(-50%);
+                    text-align: center;
+                    color: white;
+                    display: flex;
+                    flex-direction: column;
+
+                    h1{
+                        align-self: center;
+                        font-weight: 400;
+                        margin-bottom: 1em;
+                        position: relative;
+                        background: none;
+                        z-index: 1;
+
+                        &::after{
+                            position: absolute;
+                            bottom: -5px;
+                            left: 0;
+                            content: "";
+                            height: 20px;
+                            width: 100%;
+                            background-color: grey;
+                            z-index: -1;
+                        }
+                    }
+
+                    p{
+                        text-align: start;
+                        font-size: 16px;
+                    }
                 }
             }
         }
 
         .transformation-middle-section{
-            padding: 3em 10em;
-            background-color: white;
+            margin-top: 8em;
+            margin-bottom: 5em;
+            margin-left: auto;
+            margin-right: auto;
+            width: 80%;
 
             .middle-content-container{
                 display: flex;
                 flex-direction: column;
                 justify-content: space-around;
-                width: 50%;
-                min-height: 30vw;
+                width: 100%;
+
+                p{
+                    font-size: 16px;
+                }
 
                 .devis-btn{
-                    font-size: calc(16px + (20 - 16) * ((100vw - 300px) / (1600 - 300)));
+                    margin-top: 5em;
+                    font-size: 16px;
                     align-self: flex-end;
                 }
-            }
 
-        }
-    }
-
-    @media screen and (max-width: $tablet) {
-        .transformation-page{
-            .transformation-header{
-
-                p{
-                    width: 100%;
-                    margin-bottom: 5em;
-                }
-
-                .image-container{
-                    height: 20em;
-                    width: 100%;
-
-                    img{
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                    }
+                ul{
+                    font-size: 16px;
+                    color: black;
                 }
             }
 
-            .transformation-middle-section{
-                padding: 0 10em;
-                padding-top: 17em;
-
-                .middle-content-container{
-                    width: 100%;
-
-                    .devis-btn{
-                        margin: 2em 0;
-                        align-self: center;
-                    }
-                }
-
-            }
-        }
-    }
-
-    @media screen and (max-width: $mobile) {
-        .transformation-page{
-            .transformation-header{
-                margin: 0 2em;
-                p{
-                    width: 100%;
-                    margin-bottom: 5em;
-                }
-
-                .image-container{
-                    width: 100%;
-
-                    img{
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                    }
-                }
-            }
-
-            .transformation-middle-section{
-                padding: 0 2em;
-                padding-top: 17em;
-
-                .middle-content-container{
-                    width: 100%;
-
-                    .devis-btn{
-                        align-self: center;
-                    }
-                }
-
-            }
         }
     }
 </style>

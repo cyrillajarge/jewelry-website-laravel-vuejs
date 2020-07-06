@@ -1,18 +1,19 @@
 <template>
     <div class="product-card-container">
-        <img :src="product.image.url" :alt="product.image.name">
-        <div class="product-card-overlay"></div>
-        <div class="product-card-content">
+        <div class="image-container">
+            <img :src="product.images[0].url" :alt="product.images[0].name">
+        </div>
+        <div class="info-container">
             <h1>{{ product.name }}</h1>
             <p>{{ product.description }}</p>
-            <router-link class="base-btn-dark" :to="{ name: product-info, params: { slug: product.slug, id: product.id }}">Voir la fiche</router-link>
+            <!-- <router-link class="base-btn-dark link-btn" :to="{ name: 'product-info', params: { category_slug: this.category_slug, product_slug: this.product.slug }}">Voir la fiche</router-link> -->
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    props:["product"],
+    props:["product","category_slug"],
     data () {
         return {
             
@@ -24,54 +25,82 @@ export default {
 <style lang="scss" scoped>
 
     .product-card-container{
-        width: 50%;
-        margin: 0 auto;
-        position: relative;
+        display: flex;
+        flex-direction: column;
+        height: 500px;
+        width: 300px;
+        margin: 1em 0;
+        // background-color: red;
 
-        img{
+        .image-container{
+            position: relative;
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+            height: 400px;
+            z-index: 1;
+            background-color: rgb(250, 250, 250);
 
-        .product-card-overlay{
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: white;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-        }
+            img{
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
 
-        .product-card-content{
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            &::before{
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 35%;
+                height: 300px;
+                background: black;
+                transform: translateY(-50%) rotateZ(-45deg);
+                width: 30%;
+                z-index: -1;
+                transition: transform 0.25s ease-out;
+            }
 
-            h1,p{
-                color: black;
+            &::after{
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 35%;
+                height: 300px;
+                background: black;
+                transform: translateY(-50%) rotateZ(45deg);
+                width: 30%;
+                z-index: -1;
+                transition: transform 0.25s ease-out;
             }
         }
 
         &:hover{
-            .product-card-overlay{
-                opacity: 1;
-                transition: opacity 0.5s ease-in-out;
-            }
+            .image-container{
+                &::before{
+                    transform: translateY(-50%) rotateZ(-90deg);
+                    transition: transform 0.25s ease-out;
+                }
 
-            .product-card-content{
-                opacity: 1;
-                transition: opacity 0.5s ease-in-out;
+                &::after{
+                    transform: translateY(-50%);
+                    transition: transform 0.25s ease-out;
+                }
+            }
+        }
+
+        .info-container{
+            height: 100px;
+
+            h1{
+                margin-top: 0.5em;
+                margin-bottom: 0;
+                margin-left: 0.5rem;
+                font-size: 25px;
+                color: black;
+            }
+            
+            p{
+                margin-left: 0.5rem;
+                font-size: 14px;
+                color: rgb(73, 73, 73);
             }
         }
     }

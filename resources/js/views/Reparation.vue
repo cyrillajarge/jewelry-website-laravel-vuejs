@@ -1,14 +1,18 @@
 <template>
     <div class="reparation-page">
-        <div class="reparation-header">
-            <h1 class="reparation-title">Services de réparation.</h1>
-            <p class="reparation-text">
-                Car vous tenez à vos bijoux, nous réaliserons les réparations avec le plus grand soin pour préserver leur état d'origine.<br>
-                Nous ferons notre possible pour écourter le délai de réparation afin que vous puissiez profiter au plus vite de votre bijou remis à neuf.
-            </p>
-            <div class="image-container">
-                <img src="/img/reparation-bijoux.jpg" alt="Reparation">
+        <div class="reparation-landing">
+            <div class="reparation-image-container">
+                <div class="image-container">
+                    <img src="/img/reparation-bijoux.jpg" alt="Reparation">
+                </div>
+                <div class="reparation-image-overlay"></div>
+                <div class="reparation-image-text">
+                    <h1>Service de réparation</h1>
+                    <p>Car vous tenez à vos bijoux, nous réaliserons les réparations avec le plus grand soin pour préserver leur état d'origine.<br>
+                Nous ferons notre possible pour écourter le délai de réparation afin que vous puissiez profiter au plus vite de votre bijou remis à neuf.</p>
+                </div>
             </div>
+            <JumpingArrow class="jumping-arrow"/>
         </div>
         <div class="reparation-middle-section">
             <div class="middle-content-container">
@@ -29,11 +33,19 @@
                 <router-link to="/contact" class="base-btn-dark devis-btn">Obtenir un devis</router-link>
             </div>
         </div>
+        <ServicesSuggestions />
     </div>
 </template>
 
 <script>
+import JumpingArrow from '../components/JumpingArrow'
+import ServicesSuggestions from '../components/ServicesSuggestions'
+
 export default {
+    components: {
+        JumpingArrow,
+        ServicesSuggestions
+    }
     
 }
 </script>
@@ -42,7 +54,7 @@ export default {
     @import '~@/_variables.scss';
 
     h1{
-        font-size: calc(20px + (40 - 20) * ((100vw - 300px) / (1600 - 300)));
+        font-size: 35px;
     }
 
     p, ul, li{
@@ -59,147 +71,115 @@ export default {
         display: flex;
         flex-direction: column;
 
-        .reparation-header{
-            background-color: black;
-            padding-top: 3em;
-            padding-bottom: 3em;
-            margin: 0 10em;
-            position: relative;
+        .reparation-landing{
+            display: flex;
+            flex-direction: column;
+            justify-self: center;
+            align-items: center;
+            height: calc(100vh - 70px - 53px);
 
-            h1{
+            .reparation-image-container{
                 position: relative;
-                margin: 2em 0;
-                color: white;
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                height: 75%;
+                margin: auto 0;
 
-                &::after{
-                    position: absolute;
-                    bottom: -2px;
-                    left: 0;
-                    content: "";
-                    height: 2px;
-                    width: 10%;
-                    background-color: white;
+                .image-container{
+                    height: 100%;
+                    width: 75%;
+
+                    img{
+                        object-fit: cover;
+                        width: 100%;
+                        height: 100%;
+                    }
                 }
-            }
 
-            p{
-                color: white;
-                width: 50%;
-                padding: 1em 0;
-            }
-
-            .image-container{
-                position: absolute;
-                height: 30vw;
-                width: 30vw;
-                bottom: 0;
-                transform: translateY(75%);
-                right: 0;
-
-                img{
+                .reparation-image-overlay{
+                    position: absolute;
+                    top: 0;
+                    left: 0;
                     width: 100%;
                     height: 100%;
-                    object-fit: cover;
-                    filter: grayscale(1);
+                    background: rgb(2,0,36);
+                    background: linear-gradient(90deg, rgba(2,0,36,0) 0%, rgba(0,0,0,1) 75%, rgba(0,0,0,1) 100%)
+                }
+
+                .jumping-arrow{
+                    position: absolute;
+                    bottom: 0;
+                }
+
+                .reparation-image-text{
+                    position: absolute;
+                    top: 50%;
+                    right: 10%;
+                    width: 40%;
+                    transform: translateY(-50%);
+                    text-align: center;
+                    color: white;
+                    display: flex;
+                    flex-direction: column;
+
+                    h1{
+                        align-self: center;
+                        font-weight: 400;
+                        margin-bottom: 1em;
+                        position: relative;
+                        background: none;
+                        z-index: 1;
+
+                        &::after{
+                            position: absolute;
+                            bottom: -5px;
+                            left: 0;
+                            content: "";
+                            height: 20px;
+                            width: 100%;
+                            background-color: grey;
+                            z-index: -1;
+                        }
+                    }
+
+                    p{
+                        text-align: start;
+                        font-size: 16px;
+                    }
                 }
             }
         }
 
         .reparation-middle-section{
-            padding: 3em 10em;
-            background-color: white;
+            margin-top: 8em;
+            margin-bottom: 5em;
+            margin-left: auto;
+            margin-right: auto;
+            width: 80%;
 
             .middle-content-container{
                 display: flex;
                 flex-direction: column;
                 justify-content: space-around;
-                width: 50%;
-                min-height: 30vw;
+                width: 100%;
+
+                p{
+                    font-size: 16px;
+                }
 
                 .devis-btn{
-                    font-size: calc(16px + (20 - 16) * ((100vw - 300px) / (1600 - 300)));
+                    margin-top: 5em;
+                    font-size: 16px;
                     align-self: flex-end;
                 }
 
                 ul{
+                    font-size: 16px;
                     color: black;
                 }
             }
 
-        }
-    }
-
-    @media screen and (max-width: $tablet) {
-        .reparation-page{
-            .reparation-header{
-
-                p{
-                    width: 100%;
-                    margin-bottom: 5em;
-                }
-
-                .image-container{
-                    height: 20em;
-                    width: 100%;
-
-                    img{
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                    }
-                }
-            }
-
-            .reparation-middle-section{
-                padding: 0 10em;
-                padding-top: 17em;
-
-                .middle-content-container{
-                    width: 100%;
-
-                    .devis-btn{
-                        margin: 2em 0;
-                        align-self: center;
-                    }
-                }
-
-            }
-        }
-    }
-
-    @media screen and (max-width: $mobile) {
-        .reparation-page{
-            .reparation-header{
-                margin: 0 2em;
-                p{
-                    width: 100%;
-                    margin-bottom: 5em;
-                }
-
-                .image-container{
-                    width: 100%;
-
-                    img{
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                    }
-                }
-            }
-
-            .reparation-middle-section{
-                padding: 0 2em;
-                padding-top: 17em;
-
-                .middle-content-container{
-                    width: 100%;
-
-                    .devis-btn{
-                        align-self: center;
-                    }
-                }
-
-            }
         }
     }
 </style>

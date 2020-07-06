@@ -1,5 +1,5 @@
 <template>
-    <div class="header">
+    <div>
         <div class="header-menu">
             <div class="hamburger" @click="showMobile">
                 <i class="fas fa-bars"></i>
@@ -17,13 +17,6 @@
                 <h1>Veef.C</h1>
             </router-link>
             <div class="right-header-menu">
-                <router-link class="header-account" to="/account">
-                    <i class="fas fa-user"></i>
-                    <div id="header-account-name">Mon compte</div>
-                </router-link>
-                <router-link id="header-basket" to="/basket">
-                    <i class="fas fa-shopping-basket"></i>
-                </router-link>
                 <div class="language-picker">
                     <button @click.stop="show" class="language-picker-button">
                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -70,8 +63,8 @@
                 <li @click="showMobile"><router-link to="/house">La Maison</router-link></li>
                 <li class="sub-menu"><a @click="showJ" v-click-outside="hideJ">Joaillerie</a>
                     <ul v-show="showJoaillerie" id="joaillerie">
-                        <li @click="showMobile"><router-link to="/joaillerie/bijouterie">Bijouterie</router-link></li>
-                        <li @click="showMobile"><router-link to="/joaillerie/haute-joaillerie">Haute Joaillerie</router-link></li>
+                        <li @click="showMobile"><router-link to="/bijouterie">Bijouterie</router-link></li>
+                        <li @click="showMobile"><router-link to="/haute-joaillerie">Haute Joaillerie</router-link></li>
                     </ul>
                 </li>
                 <li class="sub-menu"><a @click="showG" v-click-outside="hideG">Grillz</a>
@@ -112,7 +105,7 @@ export default {
             (this.showPicker)? this.showPicker = false: this.showPicker = true;
         },
         showMobile: function(){
-            console.log("Show Mobile")
+            // console.log("Show Mobile")
             var el = document.getElementById("nav")
             el.classList.toggle("active")
             if(this.isMobile)
@@ -188,13 +181,6 @@ export default {
             elementS.style.transform = "translateX(-"+leftPosS+"px)"
         }
     },
-    mounted: function(){
-        this.resizeSubMenu()
-        window.addEventListener('resize', this.resizeSubMenu);
-    },
-    beforeDestroy: function(){
-        window.removeEventListener('resize', this.resizeSubMenu)
-    }
 }
 </script>
 
@@ -368,9 +354,6 @@ export default {
 
     .nav-container{
         display: flex;
-        position: relative;
-        top: 0;
-        left: 0;
         background-color: white;
         width: 100%;
         box-sizing: border-box;
@@ -382,19 +365,25 @@ export default {
             width: 100%;
             margin: 0;
             padding: 0;
+            background-color: white;
 
             li{
-                position: relative;
                 list-style: none;
 
+                @keyframes submenu {
+                    0%   {transform: translateY(-53px); opacity: 0;}
+                    100% {transform: translateY(0); opacity: 1;}
+                }
+
                 ul{
-                    border-top: 1px solid grey;
                     position: absolute;
-                    width: 100vw;
+                    top: calc(70px + 53px);
+                    left: 0;
                     display: flex;
-                    background-color: white;
-                    transition: 0.5s;
-                    border-bottom: 1px solid black;
+                    // background-color: red;
+                    animation-name: submenu;
+                    animation-duration: 1s;
+                    width: 100vw;
                 }
                 
                 a{
@@ -497,8 +486,8 @@ export default {
         .submenu-content{
             display: flex;
             height: 50px;
-            border-top: 1px solid black;
-            border-bottom: 1px solid black;
+            // border-top: 1px solid black;
+            // border-bottom: 1px solid black;
             flex-direction: row;
             justify-content: space-evenly;
             align-items: center;

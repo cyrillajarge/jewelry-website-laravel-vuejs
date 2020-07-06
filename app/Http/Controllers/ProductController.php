@@ -17,7 +17,7 @@ class ProductController extends Controller
     {
         $products = QueryBuilder::for(Product::class)
             ->allowedSorts('id')
-            ->allowedIncludes('images')
+            ->allowedIncludes('images','category')
             ->get();
 
         return $products;
@@ -56,15 +56,15 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  string  $slug
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
         $product = QueryBuilder::for(Product::class)
             ->allowedIncludes(['images'])
-            ->get()
-            ->find($id);
+            ->where('slug', $slug)
+            ->get();
 
         return $product;
     }

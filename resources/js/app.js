@@ -20,6 +20,8 @@ import Entretien from './views/Entretien'
 import Bijouterie from './views/Bijouterie'
 import Products from './views/Products'
 
+import NotFound from './views/NotFound'
+
 import ProductInfo from './views/ProductInfo'
 
 import AdminPanel from './views/admin/AdminPanel'
@@ -100,22 +102,10 @@ const router = new VueRouter({
             component: Entretien
         },
         {
-            path: '/joaillerie/bijouterie',
+            path: '/bijouterie',
             name: 'bijouterie',
             meta: { layout: "guest"},
             component: Bijouterie
-        },
-        {
-            path: '/joaillerie/:id/:slug',
-            name: 'products',
-            meta: { layout: "guest"},
-            component: Products
-        },
-        {
-            path: '/joaillerie/alliance/:id',
-            name: 'product-info',
-            meta: { layout: "guest"},
-            component: ProductInfo
         },
         {
             path: '/admin',
@@ -158,6 +148,24 @@ const router = new VueRouter({
             name: 'admin-images',
             meta: {layout: "admin"},
             component: AdminImages
+        },
+        {
+            path: '/bijouterie/:category_slug/:product_slug',
+            name: 'product-info',
+            meta: { layout: "guest"},
+            component: ProductInfo,
+        },
+        {
+            path: '/bijouterie/:slug',
+            name: 'category',
+            meta: { layout: "guest"},
+            component: Products,
+        },
+        {
+            path: '*',
+            name: '404',
+            meta: {layout: "guest"},
+            component: NotFound
         }
     ]
 })

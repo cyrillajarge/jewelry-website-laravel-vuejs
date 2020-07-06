@@ -24,6 +24,10 @@ export default {
 }
 </script>
 <style lang="scss">
+    #app{
+        background-color: white;
+    }
+
     @keyframes animateLinkRelease {
         0%{
             transform: translateX(0);
@@ -50,7 +54,7 @@ export default {
         text-decoration: none;
         color: white;
         text-transform: uppercase;
-        font-weight: 600;
+        font-weight: 400;
         align-self: center;
         overflow: hidden;
 
@@ -80,6 +84,7 @@ export default {
         &:hover{
             text-decoration: none;
             color: white;
+
             &::after{
                 width: 100%;
                 animation: animateLink .375s ease-in-out forwards running;
@@ -139,5 +144,10 @@ export default {
 
     textarea:focus{
         outline:0 !important;
+    }
+
+    a:hover{
+        text-decoration: none !important;
+        font-style: none !important;
     }
 </style>

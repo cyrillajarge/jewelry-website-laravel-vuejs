@@ -1,25 +1,39 @@
 <template>
-    <div>
-        <div class="products-full-header">
-            <FullHeightHeader :image="image"/>
-            <div class="overlay"></div>
-            <div class="full-header-content">
-                <h1>Alliances.</h1>
+    <div v-if="this.category" class="product-category">
+        <div class="category-landing">
+            <div class="category-image-container">
+                <div class="image-container">
+                    <img src="http://placeimg.com/1000/1000/any" alt="Image">
+                </div>
+                <div class="overlay"></div>
+                <div class="landing-content">
+                    <h1>Découvrez nos {{this.category.name}}.</h1>
+                </div>
             </div>
             <JumpingArrow class="jumping-arrow" />
         </div>
         <div class="product-intro">
             <p>
-                Chaque union est unique c'est pourquoi chaque bijou devrait l'être également.<br>
-                Réalisez une création sur-mesure ou découvrez notre sélection d'idées, chaque modèle étant personnalisable à votre guise.
-            </p> 
+                {{this.category.description}}
+            </p>
         </div>
         <div class="products-container">
-            <h1>Nos alliances</h1>
             <div class="products-cards-container">
-                <div class="product-card" v-for="(product, i) in products" v-bind:key="i">
-                    <ProductCard v-bind:product="product" />
-                </div>
+                <router-link
+                    v-for="product in this.category.products" v-bind:key="product.id"
+                    :to="{ name: 'product-info', params: { category_slug: category.slug, product_slug: product.slug }}">
+                    <ProductCard 
+                        class="product-card"
+                        :product="product"
+                        :category_slug="category.slug"
+                    />
+                </router-link>
+            </div>
+        </div>
+        <div class="categories-suggestions">
+            <h1 class="suggestions-title">Ces catégories peuvent aussi vous intéresser</h1>
+            <div class="categories-suggestions-container">
+
             </div>
         </div>
     </div>
@@ -36,73 +50,27 @@ export default {
         JumpingArrow,
         ProductCard
     },
-    mounted(){
-        // axios.get('/categories/1/products')
-        // .then(response => {
-        //     console.log(response)
-        // })
-        // .catch(error => {
-        //     console.log(error)
-        // })
-    },
     data () {
         return{
             'image': {
-                "name": "Alliances",
+                "name": "Découvrez nos alliances",
                 "url": "/img/alliances.jpg"
             },
-            'products': [
-                {
-                    "image":{
-                        "name": "Ring",
-                        "url": "/img/ring.png"
-                    },
-                    "name": "Alliance #1",
-                    "description": "The good ring",
-                    "routename": "alliance-info",
-                    "id": "123"
-                },
-                {
-                    "image":{
-                        "name": "Ring",
-                        "url": "/img/ring.png"
-                    },
-                    "name": "Alliance #2",
-                    "description": "The good ring",
-                    "routename": "alliance-info",
-                    "id": "123"
-                },
-                {
-                    "image":{
-                        "name": "Ring",
-                        "url": "/img/ring.png"
-                    },
-                    "name": "Alliance #3",
-                    "description": "The good ring",
-                    "routename": "alliance-info",
-                    "id": "123"
-                },
-                {
-                    "image":{
-                        "name": "Ring",
-                        "url": "/img/ring.png"
-                    },
-                    "name": "Alliance #4",
-                    "description": "The good ring",
-                    "routename": "alliance-info",
-                    "id": "123"
-                },
-                {
-                    "image":{
-                        "name": "Ring",
-                        "url": "/img/ring.png"
-                    },
-                    "name": "Alliance #5",
-                    "description": "The good ring",
-                    "routename": "alliance-info",
-                    "id": "123"
-                }
-            ]
+            'category': ''
+        }
+    },
+    mounted(){
+        axios.get('/categories/' + this.$route.params.slug + '/products?include=products, products.images')
+        .then(response => {
+            this.category = response.data[0]
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    },
+    methods: {
+        capitalize(name){
+            return name.charAt(0).toUpperCase() + name.slice(1)
         }
     }
 }
@@ -111,89 +79,138 @@ export default {
 <style lang="scss" scoped>
 @import '~@/_variables.scss';
 
-    .products-full-header{
-        position: relative;
-        height: calc(100vh - 70px - 53px);
-
-        .overlay{
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: black;
-            opacity: 0.15;
-        }
-        
-        .full-header-content{
-            position: absolute;
+    .product-category{
+        .category-landing{
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-self: center;
             align-items: center;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%,-50%);
+            height: calc(100vh - 70px - 53px);
 
-            h1{
-                font-size: calc(44px + (60 - 44) * ((100vw - 300px) / (1600 - 300)));
-                text-align: center;
-                color: white;
+            .category-image-container{
+                position: relative;
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                height: 75%;
+                margin: auto 0;
+
+                .image-container{
+                    height: 100%;
+                    width: 85%;
+
+                    img{
+                        height: 100%;
+                        width: 100%;
+                        object-fit: cover;
+                    }
+                }
+
+                .overlay{
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgb(2,0,36);
+                    background: linear-gradient(90deg, rgba(2,0,36,0) 0%, rgba(0,0,0,1) 75%, rgba(0,0,0,1) 100%);
+                }
+
+                .landing-content{
+                    position: absolute;
+                    top: 50%;
+                    right: 15%;
+                    transform: translateY(-50%);
+                    text-align: center;
+                    color: white;
+                    display: flex;
+                    flex-direction: column;
+
+                    h1{
+                        align-self: center;
+                        font-weight: 400;
+                        margin-bottom: 1em;
+                        position: relative;
+                        background: none;
+                        z-index: 1;
+
+                        &::after{
+                            position: absolute;
+                            bottom: -5px;
+                            left: 0;
+                            content: "";
+                            height: 20px;
+                            width: 100%;
+                            background-color: grey;
+                            z-index: -1;
+                        }
+                    }
+                }
             }
-        }
 
-        .jumping-arrow{
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-        }
-    }
-
-    .product-intro{
-        display: flex;
-        flex-direction: column;
-        width: 60%;
-        margin: 0 auto;
-
-        p{
-            margin: 6em 0;
-            color: white;
-            line-height: 2em;
-            text-align: center;
-            font-size: calc(14px + (16 - 14) * ((100vw - 300px) / (1600 - 300)));
-        }
-    }
-
-    .products-container{
-        width: 80%;
-        margin: 0 auto;
-        
-        h1{
-            color: white;
-            font-size: calc(20px + (40 - 20) * ((100vw - 300px) / (1600 - 300)));
-
-            position: relative;
-            color: white;
-
-            &::after{
+            .jumping-arrow{
                 position: absolute;
-                bottom: -2px;
-                left: 0;
-                content: "";
-                height: 2px;
-                width: 10%;
-                background-color: white;
+                bottom: 0;
             }
         }
 
-        .products-cards-container{
-            margin: 3em 0;
+        .product-intro{
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
+            width: 60%;
+            margin: 0 auto;
 
-            .product-card{
-                margin: 1em 0;
-                width: 50%;
+            p{
+                margin: 6em 0;
+                color: black;
+                line-height: 2em;
+                text-align: center;
+                font-size: 20px;
+            }
+        }
+
+        .products-container{
+            width: 100%;
+            // margin: 0 auto;
+
+            .products-cards-container{
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-around;
+                align-items: flex-start;
+                padding: 1em 0;
+            }
+        }
+
+        .categories-suggestions{
+            display: flex;
+            flex-direction: column;
+            margin: 10em 0;
+
+            .suggestions-title{
+                align-self: flex-start;
+                color: black;
+                margin-bottom: 2em;
+                position: relative;
+                background: none;
+                z-index: 1;
+
+                &::after{
+                    position: absolute;
+                    bottom: -5px;
+                    left: 0;
+                    content: "";
+                    height: 20px;
+                    width: 100%;
+                    background-color: lightgrey;
+                    z-index: -1;
+                }
+            }
+
+            .categories-suggestions-container{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
             }
         }
     }

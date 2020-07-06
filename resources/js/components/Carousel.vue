@@ -9,6 +9,7 @@
         <div class="slide">
             <img src="img/zola-grillz.png" alt="">
         </div>
+        <!-- <div class="overlay"></div> -->
         <a class="prev" @click="plusSlides(-1)"></a>
         <a class="next" @click="plusSlides(1)"></a>
     </div>
@@ -48,6 +49,7 @@ export default {
     .carousel-container{
         height: 100%;
         width: 100%;
+        position: relative;
 
         .slide{
             display: none;
@@ -62,5 +64,15 @@ export default {
                 object-fit: cover;
             }
         }
+
+        // .overlay{
+        //     position: absolute;
+        //     height: 100%;
+        //     width: 100%;
+        //     top: 0;
+        //     left: 0;
+        //     background: rgb(2,0,36);
+        //     background: linear-gradient(180deg, rgba(2,0,36,0) 0%, rgba(0,0,0,1) 80%);
+        // }
     }
 </style>
