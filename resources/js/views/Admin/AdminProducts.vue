@@ -26,6 +26,10 @@
                         <input name="titre" type="text" placeholder="Nom" v-model="name">
                     </div>
                     <div class="form-element">
+                        <label for="slug">Slug:</label>
+                        <input name="slug" type="text" placeholder="Slug" v-model="slug">
+                    </div>
+                    <div class="form-element">
                         <label for="description">Description:</label>
                         <textarea name="description" type="text" placeholder="Description" v-model="description"></textarea>
                     </div>
@@ -61,16 +65,17 @@ export default {
     },
     data () {
         return {
-            "dropdown": false,
-            "filter": '',
-            "modal" : false,
-            "category" : "",
-            "name" : "",
-            "description" : "",
-            "selected_images": '',
-            "page_title": "produits",
-            "categories": '',
-            "products": ''
+            'dropdown' : false,
+            'filter' : '',
+            'modal' : false,
+            'category' : "",
+            'name' : "",
+            'slug': "",
+            'description' : "",
+            'selected_images': '',
+            'page_title': "produits",
+            'categories': '',
+            'products': ''
         }
     },
     methods: {
@@ -112,10 +117,11 @@ export default {
         },
         addProduct(){
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.getters.token
-
+            
             axios.post('/products', {
                 'category_id': this.category.id,
                 'name': this.name,
+                'slug': this.slug,
                 'description': this.description,
                 'images' : this.selected_images
             })

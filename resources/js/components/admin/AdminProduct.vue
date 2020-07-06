@@ -9,7 +9,11 @@
         <form v-if="show_dropdown" class="page-element-data" action="" @submit.prevent="updateProduct">
             <div class="form-element">
                 <label for="name">Name:</label>
-                <input type="text" name="name" placeholder="Nom du produit" v-model="name">
+                <input type="text" name="name" v-model="name">
+            </div>
+            <div class="form-element">
+                <label for="slug">Slug:</label>
+                <input type="text" name="slug" v-model="slug">
             </div>
             <div class="form-element">
                 <label for="description">Contenu:</label>
@@ -39,6 +43,7 @@ export default {
         return{
             'show_dropdown': false,
             'name': this.product.name,
+            'slug': this.product.slug,
             'description': this.product.description,
             'selected_images': this.initializeSelected()
         }
@@ -73,6 +78,7 @@ export default {
             axios.patch('/products/' + this.product.id ,{
                 'category_id': this.product.category_id,
                 'name': this.name,
+                'slug': this.slug,
                 'description' : this.description,
                 'images' : this.selected_images
             })

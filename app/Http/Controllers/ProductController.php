@@ -42,13 +42,14 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'category_id' => 'required|',
+            'category_id' => 'required|integer',
             'name' => 'required|string',
+            'slug' => 'required|string',
             'description' => 'required|string',
             'images' => 'required'
         ]);
                 
-        $product = Product::create(array_slice($data, 0, 3))->images()->attach($data['images']);
+        $product = Product::create(array_slice($data, 0, 4))->images()->attach($data['images']);
         
         return response($product, 201);
     }
