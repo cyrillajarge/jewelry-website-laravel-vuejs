@@ -1,24 +1,24 @@
 <template>
-    <div v-if="this.product" class="alliance-info">
-        <h1 class="alliance-name">{{this.product.name}}</h1>
-        <div class="alliance-image-viewer">
-            <div class="alliance-big">
-                <div class="alliance-big-placeholder">
+    <div v-if="this.product" class="product-wrapper">
+        <h1 class="product-name">{{this.product.name}}</h1>
+        <div class="product-image-viewer">
+            <div class="product-big">
+                <div class="product-big-placeholder">
                     <img :src="this.product.images[this.selected].url" :alt="this.product.images[selected].name">
                 </div>
             </div>
-            <div class="alliance-thumbnails">
+            <div class="product-thumbnails">
                 <div class="thumbnail-placeholder" v-for="(image,i) in this.product.images" v-bind:key="image.id" @click="selectImage(i)">
                     <img :src="image.url" alt="Image">
                     <div v-if="i != selected" class="overlay"></div>
                 </div>
             </div>
         </div>
-        <div class="alliance-info">
+        <div class="product-info">
             <div class="tabs">
                 <div class="tab">
-                    <button class="tablinks" @click="openTab('Description')" ref="defaultopen">Description.</button>
-                    <button class="tablinks" @click="openTab('Composition')">Composition.</button>
+                    <button class="tablinks selected" id="descriptionTab" @click="openTab('Description')" ref="defaultopen">Description.</button>
+                    <button class="tablinks" id="compositionTab" @click="openTab('Composition')">Composition.</button>
                 </div>
                 <div id="Description" class="tabcontent">
                     <p>{{this.product.description}}</p>
@@ -28,16 +28,18 @@
                 </div>
             </div>
             <div class="download">
-                <button class="base-btn-light">Télécharger la fiche</button>
+                <button class="base-btn-dark">Télécharger la fiche</button>
             </div>
         </div>
-        <div class="alliances-suggestions-wrapper">
-            <div class="alliances-suggestions-container">
+        <div class="product-suggestions-wrapper">
+            <div class="product-suggestions-container">
                 <h1>Ces bijoux peuvent peut-être vous intéresser</h1>
-                <div class="suggestions-cards-container">
-                    <div class="suggestion-card" v-for="(suggestion, i) in this.suggestions" v-bind:key="i">
+                <div class="product-cards-container">
+                    <router-link
+                        v-for="(suggestion, i) in this.suggestions" v-bind:key="i"
+                        :to="{ name: 'product-info', params: { category_slug: getCategorySlug(suggestion.category_id), product_slug: suggestion.slug }}">
                         <ProductCard v-bind:product="suggestion"/>
-                    </div>
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -62,13 +64,30 @@ export default {
         selectImage(i){
             this.selected = i
         },
-        openTab(id){
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
+        getCategorySlug(id){
+            let categories = this.$store.getters.allCategories
+            for(let i = 0;i<categories.length;i++){
+                if(categories[i].id == id){
+                    return categories[i].slug
+                }
             }
-            document.getElementById(id).style.display = "flex";
+        },
+        openTab(id){
+            var tabscontent = document.getElementsByClassName('tabcontent')
+            for(let i = 0;i<tabscontent.length;i++){
+                tabscontent[i].style.display = "none"
+            }
+            var desctab = document.getElementById("descriptionTab")
+            var compositiontab =  document.getElementById("compositionTab")
+            if(id=="Composition"){
+                desctab.classList.remove('selected')
+                compositiontab.classList.add('selected')
+                document.getElementById(id).style.display = "flex"
+            } else {
+                desctab.classList.add('selected')
+                compositiontab.classList.remove('selected')
+                document.getElementById(id).style.display = "flex"
+            }
         },
         getProduct(){
             axios.get('/products/' + this.$route.params.product_slug + '?include=images')
@@ -86,8 +105,9 @@ export default {
             axios.get('/products?include=images')
             .then(response => {
                 const shuffled = response.data.sort(() => 0.5 - Math.random())
-                let chosen = shuffled.slice(0, 2)
+                let chosen = shuffled.slice(0, 3)
                 this.suggestions = chosen
+                console.log(this.suggestions)
                 for(var i=0;i<this.suggestions.length;i++){
                     var id = this.suggestions[i].category_id
                     this.$store.getters.allCategories
@@ -113,41 +133,44 @@ export default {
         text-align: justify;
     }
 
-    .alliance-info{
+    .product-wrapper{
         background-color: white;
+        display: flex;
+        flex-direction: column;
 
-        .alliance-name{
+        .product-name{
             background-color: white;
             color: black;
-            width: 90%;
-            margin: 0 auto;
             padding-top: 1em;
             position: relative;
             font-size: calc(20px + (40 - 20) * ((100vw - 300px) / (1600 - 300)));
+            z-index: 1;
+            align-self: flex-start;
 
             &::after{
                 position: absolute;
-                bottom: -2px;
+                bottom: -5px;
                 left: 0;
                 content: "";
-                height: 2px;
-                width: 10%;
-                background-color: black;
+                height: 20px;
+                width: 100%;
+                background-color: lightgray;
+                z-index: -1;
             }
         }
 
-        .alliance-image-viewer{
+        .product-image-viewer{
             background-color: white;
             display: flex;
             height: 80em;
-            width: 90%;
+            width: 100%;
             margin: 0 auto;
 
-            .alliance-big{
-                width: 80%;
+            .product-big{
+                width: 75%;
                 padding: 4em 0;
 
-                .alliance-big-placeholder{
+                .product-big-placeholder{
                     height: 100%;
                     width: 100%;
 
@@ -159,8 +182,8 @@ export default {
                 }
             }
 
-            .alliance-thumbnails{
-                width: 20%;
+            .product-thumbnails{
+                width: 25%;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-evenly;
@@ -190,11 +213,8 @@ export default {
             }
         }
 
-        .alliance-info{
-            background-color: black;
+        .product-info{
             display: flex;
-            width: 100%;
-            padding: 4em 4em;
 
             .tabs{
                 width: 80%;
@@ -204,9 +224,10 @@ export default {
                 .tab {
                     display: flex;
                     justify-content: flex-start;
+                    
 
-                    button {
-                        color: white;
+                    .tablinks {
+                        color: black;
                         font-size: calc(20px + (24 - 20) * ((100vw - 300px) / (1600 - 300)));
                         text-transform: capitalize;
                         font-weight: 600;
@@ -223,6 +244,10 @@ export default {
                             text-decoration: underline;
                         }
                     }
+
+                    .selected{
+                        text-decoration: underline;
+                    }
                 }
 
                 .tabcontent {
@@ -230,7 +255,7 @@ export default {
                     padding: 12px 12px;
 
                     p{
-                        color: white;
+                        color: black;
                     }
                 }
             }
@@ -249,12 +274,11 @@ export default {
             }
         }
 
-        .alliances-suggestions-wrapper{
-            border-top: 1px solid white;
-            background-color: black;
+
+        .product-suggestions-wrapper{
             padding: 2em 0;
             
-            .alliances-suggestions-container{
+            .product-suggestions-container{
                 width: 90%;
                 margin: 0 auto;
 
@@ -274,15 +298,11 @@ export default {
                     }
                 }
 
-                .suggestions-cards-container{
+                .product-cards-container{
                     margin: 3em 0;
                     display: flex;
-                    flex-wrap: wrap;
-
-                    .suggestion-card{
-                        margin: 1em 0;
-                        width: 50%;
-                    }
+                    flex-direction: row;
+                    justify-content: space-evenly;
                 }
             }
         }

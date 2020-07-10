@@ -169,6 +169,7 @@ export default {
         .bijouterie-categorie{
             display: flex;
             height: 30em;
+            margin: 7em 0;
         
             .image-container{
                 position: relative;
