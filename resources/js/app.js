@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { store } from './store/store'
+import Vue2Editor from "vue2-editor";
 
 require('./bootstrap')
 
@@ -183,6 +184,8 @@ Vue.directive('click-outside', {
         document.body.removeEventListener('click', window.event)
     },
 });
+
+Vue.use(Vue2Editor);
 
 Vue.component('guest-layout', Guest)
 Vue.component('admin-layout', Admin)

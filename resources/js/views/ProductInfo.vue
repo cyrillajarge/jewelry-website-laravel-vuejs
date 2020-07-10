@@ -21,7 +21,7 @@
                     <button class="tablinks" id="compositionTab" @click="openTab('Composition')">Composition.</button>
                 </div>
                 <div id="Description" class="tabcontent">
-                    <p>{{this.product.description}}</p>
+                    <div v-html="this.product.description"/>
                 </div>
                 <div id="Composition" class="tabcontent">
                     <p>La bonne composition</p>
@@ -60,6 +60,15 @@ export default {
             'product' : ''
         }
     },
+    beforeRouteUpdate (to, from, next) {
+        this.getProduct(to.params.product_slug)
+        this.getSuggestions()
+        next();
+    },
+    created(){
+        this.getProduct(this.$route.params.product_slug)
+        this.getSuggestions()
+    },
     methods: {
         selectImage(i){
             this.selected = i
@@ -89,8 +98,8 @@ export default {
                 document.getElementById(id).style.display = "flex"
             }
         },
-        getProduct(){
-            axios.get('/products/' + this.$route.params.product_slug + '?include=images')
+        getProduct(product_slug){
+            axios.get('/products/' + product_slug + '?include=images')
             .then(response => {
                 this.product = response.data[0]
                 this.$nextTick(() => {
@@ -107,7 +116,6 @@ export default {
                 const shuffled = response.data.sort(() => 0.5 - Math.random())
                 let chosen = shuffled.slice(0, 3)
                 this.suggestions = chosen
-                console.log(this.suggestions)
                 for(var i=0;i<this.suggestions.length;i++){
                     var id = this.suggestions[i].category_id
                     this.$store.getters.allCategories
@@ -117,10 +125,6 @@ export default {
                 console.log(error)
             })
         }
-    },
-    mounted() {
-        this.getProduct()
-        this.getSuggestions()
     }
 }
 </script>

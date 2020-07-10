@@ -17,7 +17,11 @@
             </div>
             <div class="form-element">
                 <label for="description">Contenu:</label>
-                <textarea name="description" placeholder="Description" v-model="description"></textarea>
+                <!-- <textarea name="description" placeholder="Description" v-model="description"></textarea> -->
+                <div class="wysiwyg">
+                    <vue-editor v-model="description" class="editor"/>
+                    <div v-html="description" class="preview"></div>
+                </div>
             </div>
             <div class="selected-images-container">
                 <div v-for="id in selected_images" v-bind:key="id" class="selected-image-container">
@@ -33,10 +37,11 @@
 
 <script>
 import AdminImagePicker from '../../components/admin/AdminImagePicker'
+import { VueEditor } from "vue2-editor";
 
 export default {
     components: {
-        AdminImagePicker
+        AdminImagePicker,
     },
     props: ['product'],
     data () {
@@ -88,7 +93,6 @@ export default {
             .catch(error => {
                 console.log(error)
             })
-            alert("Update Product")
         },
         initializeSelected(){
             var ids = []
@@ -101,6 +105,11 @@ export default {
 }
 </script>
 
+<style lang="scss">
+    .ql-container{
+        height: auto !important;
+    }
+</style>
 <style lang="scss" scoped>
     .basic-btn-black{
         border: none;
@@ -202,6 +211,22 @@ export default {
 
                     &:hover, &:focus{
                         border-bottom: 1px solid black;
+                    }
+                }
+
+                .wysiwyg{
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    flex-grow: 1;
+                    width: 100%;
+
+                    .editor{
+                        width: 49%;
+                    }
+
+                    .preview{
+                        width: 49%;
                     }
                 }
             }
