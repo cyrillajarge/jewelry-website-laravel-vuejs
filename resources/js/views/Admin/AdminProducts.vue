@@ -31,7 +31,10 @@
                     </div>
                     <div class="form-element">
                         <label for="description">Description:</label>
-                        <textarea name="description" type="text" placeholder="Description" v-model="description"></textarea>
+                        <div class="wysiwyg">
+                            <vue-editor v-model="description" class="editor"/>
+                            <div v-html="description" class="preview"></div>
+                        </div>
                     </div>
                     <button class="basic-btn-black" type="button" id="choose-images-btn" @click="triggerImagePicker">Choisir images</button>
                     <div class="selected-images-container">
@@ -236,7 +239,7 @@ export default {
 
         .modal-container{
             background-color: white;
-            width: 40em;
+            width: 100em;
 
             h1{
                 text-align: center;
@@ -274,7 +277,7 @@ export default {
                 }
 
                 .form-select{
-                    width: 70%;
+                    width: 90%;
                 }
 
                 #choose-images-btn{
@@ -288,11 +291,11 @@ export default {
                     margin: 1em 0;
                     
                     label{
-                        width: 30%;
+                        width: 10%;
                     }
 
                     input{
-                        width: 70%;
+                        width: 90%;
                         border: none;
                         border-bottom: 1px solid rgb(184, 184, 184);
 
@@ -311,8 +314,24 @@ export default {
                         }
                     }
 
+                    .wysiwyg{
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        flex-grow: 1;
+                        width: 100%;
+
+                        .editor{
+                            width: 49%;
+                        }
+
+                        .preview{
+                            width: 49%;
+                        }
+                    }
+
                     select{
-                        width: 70%;
+                        width: 90%;
                         border: none;
                         border-bottom: 1px solid rgb(184, 184, 184);
                         appearance: none;

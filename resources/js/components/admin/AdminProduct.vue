@@ -17,7 +17,6 @@
             </div>
             <div class="form-element">
                 <label for="description">Contenu:</label>
-                <!-- <textarea name="description" placeholder="Description" v-model="description"></textarea> -->
                 <div class="wysiwyg">
                     <vue-editor v-model="description" class="editor"/>
                     <div v-html="description" class="preview"></div>
