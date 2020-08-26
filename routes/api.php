@@ -49,3 +49,5 @@ Route::middleware('auth:api')->post('/images','ImageController@store');
 
 Route::get('/pages','PageController@index');
 Route::get('/events','EventsController@index');
+
+Route::post('/submit','ContactFormController@submit');

@@ -5,8 +5,7 @@
         </div>
         <div class="info-container">
             <h1>{{ product.name }}</h1>
-            <p>{{ product.description }}</p>
-            <!-- <router-link class="base-btn-dark link-btn" :to="{ name: 'product-info', params: { category_slug: this.category_slug, product_slug: this.product.slug }}">Voir la fiche</router-link> -->
+            <div class="product-info" v-html="product.description"/>
         </div>
     </div>
 </template>
@@ -97,7 +96,7 @@ export default {
                 color: black;
             }
             
-            p{
+            .product-info{
                 margin-left: 0.5rem;
                 font-size: 14px;
                 color: rgb(73, 73, 73);
