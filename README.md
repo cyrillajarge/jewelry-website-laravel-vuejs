@@ -1,4 +1,4 @@
-# Jewellry website using Laravel and VueJS
+# Jewelry website using Laravel and VueJS
 
 As a side project and in order to get into fullstack web development, I started to make a showcase website for a friends company on the theme of jewelry.
 The site is composed of a few pages with information about the company as well as the available products.   
